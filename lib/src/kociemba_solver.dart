@@ -84,6 +84,9 @@ class KociembaSolver extends Solver {
     var depthPhaseOne = 1;
     final sw = Stopwatch()..start();
 
+    maxDepth ??= Solver.defaultMaxDepth;
+    timeout ??= Solver.defaultTimeout;
+
     while (true) {
       do {
         if ((depthPhaseOne - n > search.minDistPhaseOne[n + 1]) && !busy) {

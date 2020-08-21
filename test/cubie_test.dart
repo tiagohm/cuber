@@ -451,15 +451,16 @@ void main() {
         Cube.from('BLRRULDLRFDDBRFLFRFFUBFULRDBBFUDRFRBLDRULDUFUBBDDBLUUL');
 
     expect(
-        cube.solveDeeply().map((s) => '$s'),
-        emitsInOrder(
-          const [
-            "U D R F U D2 R' U F' U' B' L2 U L2 U' R2 U2 B2 L2 U F2",
-            "R' B D B2 L D F' L' F2 D L B2 U' B2 U' L2 D' L2 B2 D'",
-            "D2 F D' L U' F D2 B U' F2 L F' D' F2 R2 B2 L2 U' F2",
-            "R' B U2 B2 U R2 D2 R2 F U2 D' B2 R' U F2 U' F2 U'",
-          ],
-        ));
+      cube.solveDeeply().map((s) => '$s'),
+      emitsInOrder(
+        const [
+          "U D R F U D2 R' U F' U' B' L2 U L2 U' R2 U2 B2 L2 U F2",
+          "R' B D B2 L D F' L' F2 D L B2 U' B2 U' L2 D' L2 B2 D'",
+          "D2 F D' L U' F D2 B U' F2 L F' D' F2 R2 B2 L2 U' F2",
+          "R' B U2 B2 U R2 D2 R2 F U2 D' B2 R' U F2 U' F2 U'",
+        ],
+      ),
+    );
   });
 
   test('solve pattern', () {

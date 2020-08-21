@@ -36,7 +36,7 @@ abstract class Solver {
     await Isolate.spawn(_solveDeeply, [
       receiver.sendPort,
       cube,
-      timeout.inMilliseconds,
+      timeout?.inMilliseconds,
       this,
     ]);
 
@@ -51,10 +51,10 @@ abstract class Solver {
 }
 
 void _solveDeeply(List data) {
-  final sender = data[0] as SendPort;
-  final cube = data[1] as Cube;
-  final timeout = data[2] as int;
-  final solver = data[3] as Solver;
+  final SendPort sender = data[0];
+  final Cube cube = data[1];
+  final int timeout = data[2] ?? Solver.defaultTimeout.inMilliseconds;
+  final Solver solver = data[3];
 
   var maxDepth = Solver.defaultMaxDepth;
   final solutions = <Solution>{};
@@ -72,7 +72,6 @@ void _solveDeeply(List data) {
         solutions.add(s);
         sender.send(s);
         maxDepth = s.length - 1;
-        print('$s');
       } else {
         maxDepth--;
       }

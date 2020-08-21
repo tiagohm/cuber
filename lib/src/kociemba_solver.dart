@@ -103,7 +103,7 @@ class KociembaSolver extends Solver {
             // increment axis
             if (++search.ax[n] > 5) {
               if (n == 0) {
-                if (sw.elapsedMilliseconds > timeout.inMilliseconds) {
+                if (sw.elapsed > timeout) {
                   return null;
                 }
 

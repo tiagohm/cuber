@@ -1,5 +1,3 @@
-import 'dart:isolate';
-
 import 'package:cuber/src/cube.dart';
 import 'package:cuber/src/solution.dart';
 
@@ -31,54 +29,30 @@ abstract class Solver {
     Cube cube, {
     Duration timeout = defaultTimeout,
   }) async* {
-    final receiver = ReceivePort();
+    timeout ??= Solver.defaultTimeout;
 
-    await Isolate.spawn(_solveDeeply, [
-      receiver.sendPort,
-      cube,
-      timeout?.inMilliseconds,
-      this,
-    ]);
+    var maxDepth = Solver.defaultMaxDepth;
+    final solutions = <Solution>{};
+    final sw = Stopwatch()..start();
 
-    await for (final data in receiver) {
-      if (data is Solution) {
-        yield data;
+    while (sw.elapsed < timeout) {
+      final s = solve(
+        cube,
+        maxDepth: maxDepth,
+        timeout: timeout - sw.elapsed,
+      );
+
+      if (maxDepth > 0 && s != null && s.isNotEmpty) {
+        if (!solutions.contains(s)) {
+          solutions.add(s);
+          yield s;
+          maxDepth = s.length - 1;
+        } else {
+          maxDepth--;
+        }
       } else {
         break;
       }
     }
   }
-}
-
-void _solveDeeply(List data) {
-  final SendPort sender = data[0];
-  final Cube cube = data[1];
-  final int timeout = data[2] ?? Solver.defaultTimeout.inMilliseconds;
-  final Solver solver = data[3];
-
-  var maxDepth = Solver.defaultMaxDepth;
-  final solutions = <Solution>{};
-  final sw = Stopwatch()..start();
-
-  while (sw.elapsedMilliseconds < timeout) {
-    final s = solver.solve(
-      cube,
-      maxDepth: maxDepth,
-      timeout: Duration(milliseconds: timeout - sw.elapsedMilliseconds),
-    );
-
-    if (maxDepth > 0 && s != null && s.isNotEmpty) {
-      if (!solutions.contains(s)) {
-        solutions.add(s);
-        sender.send(s);
-        maxDepth = s.length - 1;
-      } else {
-        maxDepth--;
-      }
-    } else {
-      break;
-    }
-  }
-
-  sender.send(null);
 }

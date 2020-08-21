@@ -10,7 +10,7 @@ Add this to your package's pubspec.yaml file:
 
 ```yaml
 dependencies:
-  cuber: ^0.1.0
+  cuber: ^0.1.1
 ```
 
 ## Usage

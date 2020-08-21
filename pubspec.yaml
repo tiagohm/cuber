@@ -1,0 +1,15 @@
+name: cuber
+description: Dart implementation of Herbert Kociemba's two-phase algorithm for solving Rubik's Cube.
+homepage: https://github.com/tiagohm/cuber
+version: 0.1.0
+
+environment:
+  sdk: ">=2.8.0 <3.0.0"
+
+dependencies:
+  meta: ^1.2.0
+  equatable: ^1.2.0
+
+dev_dependencies:
+  test: ^1.15.0
+  pedantic: ^1.9.0

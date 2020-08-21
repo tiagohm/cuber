@@ -1,6 +1,6 @@
 # Cuber
 
-This is a Dart implementation of Herbert Kociemba's two-phase algorithm for solving Rubik's Cube.
+This is a Dart implementation of Herbert Kociemba's two-phase algorithm for solving Rubik's Cube. This was inspired by C implementation of [muodov/kociemba](https://github.com/muodov/kociemba) and [tremwil/TwoPhaseSolver](https://github.com/tremwil/TwoPhaseSolver) projects.
 
 ## Installing
 

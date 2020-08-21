@@ -8,12 +8,12 @@ class Solution extends Equatable {
   final List<Move> moves;
 
   /// Elapsed time to find the [Solution].
-  final int elapsedTime;
+  final Duration elapsedTime;
 
   /// Creates a [Solution] instance.
   const Solution({
     this.moves = const [],
-    this.elapsedTime = 0,
+    this.elapsedTime = const Duration(),
   });
 
   /// Empty solution.

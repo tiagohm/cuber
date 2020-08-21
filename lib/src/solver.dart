@@ -45,7 +45,7 @@ abstract class Solver {
       if (maxDepth > 0 && s != null && s.isNotEmpty) {
         if (!solutions.contains(s)) {
           solutions.add(s);
-          yield s;
+          yield Solution(moves: s.moves, elapsedTime: sw.elapsed);
           maxDepth = s.length - 1;
         } else {
           maxDepth--;

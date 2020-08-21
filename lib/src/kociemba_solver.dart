@@ -165,9 +165,8 @@ class KociembaSolver extends Solver {
               (search.ax[depthPhaseOne - 1] != search.ax[depthPhaseOne] &&
                   search.ax[depthPhaseOne - 1] !=
                       search.ax[depthPhaseOne] + 3)) {
-            final elapsedTime = sw.elapsedMilliseconds;
             final moves = _moves(search, s);
-            return Solution(moves: moves, elapsedTime: elapsedTime);
+            return Solution(moves: moves, elapsedTime: sw.elapsed);
           }
         }
       }

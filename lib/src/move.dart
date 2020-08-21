@@ -100,27 +100,20 @@ class Move extends Equatable {
     bottomDouble,
   ];
 
-  /// Parses a [Move] from [String].
+  /// Parses a [move] from [String].
   factory Move.parse(String move) {
     if (move == null || move.isEmpty || move.length > 2) {
       throw ArgumentError('Invalid move: $move');
     }
 
-    final color = move[0].toUpperCase();
+    final letter = move[0].toUpperCase();
     final inverted = move.length > 1 && move[1] == "'";
     final double = move.length > 1 && move[1] == '2';
 
-    const colors = {
-      'F': Color.front,
-      'R': Color.right,
-      'B': Color.bottom,
-      'L': Color.left,
-      'U': Color.up,
-      'D': Color.down,
-    };
+    final color = colorFromString(letter);
 
-    if (colors.containsKey(color)) {
-      return Move(colors[color], inverted: inverted, double: double);
+    if (color != null) {
+      return Move(color, inverted: inverted, double: double);
     } else {
       throw ArgumentError('Invalid move: $move');
     }
@@ -151,7 +144,6 @@ class Move extends Equatable {
   String toString() {
     final a = stringFromColor(color);
     final b = inverted ? "'" : double ? '2' : '';
-
     return '$a$b';
   }
 

@@ -39,14 +39,14 @@ const kociemba = KociembaSolver();
 
 /// Herbert Kociemba's two-phase algorithm implementation.
 class KociembaSolver extends Solver {
-  /// Creates a instance of [KociembaSolver] class.
+  /// Creates an instance of [KociembaSolver] class.
   const KociembaSolver();
 
   @override
   Solution solve(
     Cube cube, {
-    int maxDepth = 25,
-    Duration timeout = const Duration(seconds: 30),
+    int maxDepth = Solver.defaultMaxDepth,
+    Duration timeout = Solver.defaultTimeout,
   }) {
     if (cube.verify() != CubeStatus.ok) {
       return null;

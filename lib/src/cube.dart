@@ -1,5 +1,3 @@
-import 'dart:isolate';
-
 import 'package:cuber/cuber.dart';
 import 'package:cuber/src/color.dart';
 import 'package:cuber/src/corner.dart';
@@ -1083,23 +1081,23 @@ class Cube extends Equatable {
   }
 
   /// Gets the [Solution]s as much as possible
-  /// using the [solver]'s algorithm until the
+  /// using the [solver] algorithm until the
   /// minimum number of moves is reached or the [timeout] is exceeded.
   Stream<Solution> solveDeeply({
     Solver solver = kociemba,
-    Duration timeout = const Duration(seconds: 30),
+    Duration timeout = Solver.defaultTimeout,
   }) {
     return solver?.solveDeeply(this, timeout: timeout);
   }
 
-  /// Returns the [Solution] for the [cube] using the [solver]'s algorithm
+  /// Returns the [Solution] for the [cube] using the [solver] algorithm
   /// or `null` if the [timeout] is exceeded or there is no [Solution].
   ///
-  /// Returns [Solution.empty] if the [cube] is already solved.
+  /// Returns [Solution.empty] if the [cube] is already [solved].
   Solution solve({
     Solver solver = kociemba,
-    int maxDepth = 25,
-    Duration timeout = const Duration(seconds: 30),
+    int maxDepth = Solver.defaultMaxDepth,
+    Duration timeout = Solver.defaultTimeout,
   }) {
     return solver?.solve(this, maxDepth: maxDepth, timeout: timeout);
   }

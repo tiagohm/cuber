@@ -8,6 +8,12 @@ abstract class Solver {
   ///
   const Solver();
 
+  /// Default maximum mumber of [Solution]'s moves.
+  static const defaultMaxDepth = 25;
+
+  /// Default timeout for solve the [Cube].
+  static const defaultTimeout = Duration(seconds: 30);
+
   /// Returns the [Solution] for the [cube] with a maximum of
   /// [maxDepth] moves
   /// or `null` if the [timeout] is exceeded or there is no [Solution].
@@ -15,15 +21,15 @@ abstract class Solver {
   /// Returns [Solution.empty] if the [cube] is already solved.
   Solution solve(
     Cube cube, {
-    int maxDepth = 25,
-    Duration timeout = const Duration(seconds: 30),
+    int maxDepth = defaultMaxDepth,
+    Duration timeout = defaultTimeout,
   });
 
   /// Gets the [Solution]s as much as possible until the
   /// minimum number of moves is reached or the [timeout] is exceeded.
   Stream<Solution> solveDeeply(
     Cube cube, {
-    Duration timeout = const Duration(seconds: 30),
+    Duration timeout = defaultTimeout,
   }) async* {
     final receiver = ReceivePort();
 
@@ -50,7 +56,7 @@ void _solveDeeply(List data) {
   final timeout = data[2] as int;
   final solver = data[3] as Solver;
 
-  var maxDepth = 25;
+  var maxDepth = Solver.defaultMaxDepth;
   final solutions = <Solution>{};
   final sw = Stopwatch()..start();
 

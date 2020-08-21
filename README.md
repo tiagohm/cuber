@@ -18,7 +18,7 @@ dependencies:
 ```dart
 import 'package:cuber/cuber.dart';
 
-/// Create a instance of Cube class.
+/// Create an instance of Cube class.
 final cube0 = Cube.solved;
 final cube1 = Cube.from('UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB');
 final cube2 = Cube.of([Color.up, ...]);

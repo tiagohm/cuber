@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cuber/cuber.dart';
 import 'package:test/test.dart';
 
@@ -682,6 +684,24 @@ void main() {
     const d = 'DUUDDDDUULLRRRRLLRBBBFBFFBFDDUUUUDDURRLLLLRRLBFBBFBFFF';
     final cube = Cube.from(d);
     expect(cube, Cube.sixTs);
+  });
+
+  test('svg', () {
+    const cube = Cube.solved;
+
+    for (var a = 0; a < 4; a++) {
+      for (var b = 0; b < 4; b++) {
+        for (var c = 0; c < 4; c++) {
+          final ra = Rotation(axis: Axis.x, n: a);
+          final rb = Rotation(axis: Axis.y, n: b);
+          final rc = Rotation(axis: Axis.z, n: c);
+
+          File('./cube.$ra.$rb.$rc.svg').writeAsStringSync(
+            cube.svg(orientation: [ra, rb, rc]),
+          );
+        }
+      }
+    }
   });
 }
 

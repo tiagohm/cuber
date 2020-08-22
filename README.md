@@ -1,4 +1,7 @@
-# Cuber
+<div style="text-align: center">
+<img src="https://raw.githubusercontent.com/tiagohm/cuber/master/cube.svg" height="128" alt="Cuber" />
+<h1>Cuber</h1>
+</div>
 
 This is a Dart implementation of Herbert Kociemba's two-phase algorithm for solving Rubik's Cube. This was inspired by C implementation of [muodov/kociemba](https://github.com/muodov/kociemba) and [tremwil/TwoPhaseSolver](https://github.com/tremwil/TwoPhaseSolver) projects.
 
@@ -54,6 +57,10 @@ final cube14 = Cube.from('UUFLUFBULDLRURUUFBUBBFFLDBRFDBLDRDRRFDLBLDFBRURLFBRDDL
 final cube15 = Cube.from('RRRUUFRLBLDFRRDULLUBDBFUULLRUFFDFLLDBFBRLUURFDDDBBBFDB');
 final cube16 = cube14.patternize(cube15); // From cube14 to cube15.
 final solution1 = cube16.solve(maxDepth: 25, duration: Duration(minutes: 1));
+
+// SVG.
+final String svg = cube16.svg();
+File('cube.svg').writeAsStringSync(svg);
 ```
 
 ## Cube string notation

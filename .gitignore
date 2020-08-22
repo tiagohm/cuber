@@ -24,3 +24,5 @@ pubspec.lock
 *.js_
 *.js.deps
 *.js.map
+
+**/cube.*.svg

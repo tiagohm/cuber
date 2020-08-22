@@ -6,6 +6,7 @@ import 'package:cuber/src/facelet.dart';
 import 'package:cuber/src/move.dart';
 import 'package:cuber/src/other_tables/cornerMoveTable.dart';
 import 'package:cuber/src/other_tables/edgeMoveTable.dart';
+import 'package:cuber/src/rotation.dart';
 import 'package:cuber/src/solution.dart';
 import 'package:equatable/equatable.dart';
 
@@ -61,9 +62,23 @@ const _edgeColor = [
   [Color.bottom, Color.right],
 ];
 
-const _rotation = [
-  [null, 8, 0, 1, 6, 2],
-  [6, null, 5, 8, 7, 3],
+const _orientation = [
+  [
+    null,
+    Rotation.z(3),
+    Rotation.x(),
+    Rotation.x(2),
+    Rotation.z(),
+    Rotation.x(3),
+  ],
+  [
+    Rotation.z(),
+    null,
+    Rotation.y(3),
+    Rotation.z(3),
+    Rotation.z(2),
+    Rotation.y(1),
+  ],
 ];
 
 /// The [Cube]'s status.
@@ -1115,15 +1130,15 @@ class Cube extends Equatable {
 
   static List<Color> _applyRotation(
     List<Color> input,
-    int rotation,
+    Rotation rotation,
   ) {
-    final type = rotation ~/ 3;
-    final power = rotation % 3;
+    final axis = rotation.axis;
+    final n = rotation.n;
 
-    for (var i = 0; i <= power; i++) {
-      if (type == 0) {
+    for (var i = 1; i <= n; i++) {
+      if (axis == Axis.x) {
         input = _rotateX(input);
-      } else if (type == 1) {
+      } else if (axis == Axis.y) {
         input = _rotateY(input);
       } else {
         input = _rotateZ(input);
@@ -1133,13 +1148,13 @@ class Cube extends Equatable {
     return input;
   }
 
-  static List<int> _findRotation(List<Color> input) {
+  static List<Rotation> _findRotation(List<Color> input) {
     return [
       for (var i = 4; i < 54; i += 9)
-        if (input[i] == Color.up && _rotation[0][i ~/ 9] != null)
-          _rotation[0][i ~/ 9]
-        else if (input[i] == Color.right && _rotation[1][i ~/ 9] != null)
-          _rotation[1][i ~/ 9]
+        if (input[i] == Color.up && _orientation[0][i ~/ 9] != null)
+          _orientation[0][i ~/ 9]
+        else if (input[i] == Color.right && _orientation[1][i ~/ 9] != null)
+          _orientation[1][i ~/ 9]
     ];
   }
 
@@ -1233,6 +1248,126 @@ class Cube extends Equatable {
       ...right,
       ...down,
       ...bottom,
+    ];
+  }
+
+  /// Generates a SVG image of 3 faces of the [Cube].
+  String svg({
+    int width = 1024,
+    int height = 1024,
+    Map<Color, String> colors,
+    List<Rotation> orientation,
+  }) {
+    return _svg(
+      this.colors,
+      width: width,
+      height: height,
+      colors: colors,
+      orientation: orientation,
+    );
+  }
+
+  static String _svg(
+    List<Color> cube, {
+    int width,
+    int height,
+    Map<Color, String> colors,
+    List<Rotation> orientation,
+  }) {
+    // Defaults.
+    width ??= 1024;
+    height ??= 1024;
+    colors ??= <Color, String>{};
+    colors[Color.up] ??= '#FFFF00';
+    colors[Color.right] ??= '#FF9800';
+    colors[Color.front] ??= '#4CAF50';
+    colors[Color.down] ??= '#FFFFFF';
+    colors[Color.left] ??= '#F44336';
+    colors[Color.bottom] ??= '#3F51B5';
+    orientation ??= const [];
+
+    for (final rotation in orientation) {
+      cube = _applyRotation(cube, rotation);
+    }
+
+    final sb = StringBuffer();
+
+    sb.write(
+      '<svg xmlns="http://www.w3.org/2000/svg" version="1.1"'
+      ' width="$width" height="$height"'
+      ' viewBox="-0.9 -0.9 1.8 1.8">',
+    );
+    sb.write('<g style="stroke-width:0.1;stroke-linejoin:round;opacity:1">');
+    sb.write(
+      '<polygon fill="#000000" stroke="#000000"'
+      ' points="-4.84653508457E-17,-0.707127090835'
+      ' 0.714632556057,-0.418930531644 6.65952705638E-17,-0.0229253960154'
+      ' -0.714632556057,-0.418930531644" />',
+    );
+    sb.write(
+      '<polygon fill="#000000" stroke="#000000"'
+      ' points="6.65952705638E-17,-0.0229253960154'
+      ' 0.714632556057,-0.418930531644 0.621255187784,0.36419102922'
+      ' 5.65124685731E-17,0.82453746441" />',
+    );
+    sb.write(
+      '<polygon fill="#000000" stroke="#000000"'
+      ' points="-0.714632556057,-0.418930531644'
+      ' 6.65952705638E-17,-0.0229253960154 5.65124685731E-17,0.82453746441'
+      ' -0.621255187784,0.36419102922" />',
+    );
+    sb.write('</g>');
+
+    sb.write(
+      '<g style="opacity:1;stroke-opacity:0.5;stroke-width:0;'
+      'stroke-linejoin:round">',
+    );
+
+    final facelets = <String>[];
+
+    for (var i = 0; i < 3; i++) {
+      for (var k = 0; k < 9; k++) {
+        facelets.add(colors[cube[i * 9 + k]]);
+      }
+    }
+
+    _polygons(facelets).forEach(sb.write);
+
+    sb.write('</g>');
+    sb.write('</svg>');
+
+    return '$sb';
+  }
+
+  static List<String> _polygons(List<String> c) {
+    return [
+      '<polygon fill="${c[0]}" stroke="#000000" points="-4.87551797431E-17,-0.737698233548 0.194927184994,-0.659088123315 -1.69798662097E-17,-0.572632437735 -0.194927184994,-0.659088123315" />',
+      '<polygon fill="${c[1]}" stroke="#000000" points="0.231132827495,-0.643722159841 0.445514455592,-0.557266474262 0.251609072518,-0.461728998466 0.036205642501,-0.557266474262" />',
+      '<polygon fill="${c[2]}" stroke="#000000" points="0.485543858527,-0.540273655293 0.722445335488,-0.444736179497 0.530923413951,-0.338606583425 0.291638475453,-0.444736179497" />',
+      '<polygon fill="${c[3]}" stroke="#000000" points="-0.231132827495,-0.643722159841 -0.036205642501,-0.557266474262 -0.251609072518,-0.461728998466 -0.445514455592,-0.557266474262" />',
+      '<polygon fill="${c[4]}" stroke="#000000" points="-1.19318607633E-17,-0.540273655293 0.215403430017,-0.444736179497 1.3503554096E-17,-0.338606583425 -0.215403430017,-0.444736179497" />',
+      '<polygon fill="${c[5]}" stroke="#000000" points="0.255646658169,-0.425842878909 0.494931596668,-0.319713282838 0.280929717193,-0.201126685309 0.0402432281522,-0.319713282838" />',
+      '<polygon fill="${c[6]}" stroke="#000000" points="-0.485543858527,-0.540273655293 -0.291638475453,-0.444736179497 -0.530923413951,-0.338606583425 -0.722445335488,-0.444736179497" />',
+      '<polygon fill="${c[7]}" stroke="#000000" points="-0.255646658169,-0.425842878909 -0.0402432281522,-0.319713282838 -0.280929717193,-0.201126685309 -0.494931596668,-0.319713282838" />',
+      '<polygon fill="${c[8]}" stroke="#000000" points="1.98802186902E-17,-0.29858065171 0.240686489041,-0.179994054182 6.67136692317E-17,-0.0466204974798 -0.240686489041,-0.179994054182" />',
+      '<polygon fill="${c[9]}" stroke="#000000" points="0.0201111765828,-0.011857046289 0.260797665624,-0.145230602991 0.248037844521,0.130168579642 0.0201111765828,0.272261733054" />',
+      '<polygon fill="${c[10]}" stroke="#000000" points="0.300028166812,-0.168216269351 0.514030046287,-0.28680286688 0.491194203476,-0.0199477487617 0.28726834571,0.107182913282" />',
+      '<polygon fill="${c[11]}" stroke="#000000" points="0.54910606962,-0.307361681575 0.740627991156,-0.413491277647 0.709796611771,-0.154919865813 0.526270226809,-0.0405065634573" />',
+      '<polygon fill="${c[12]}" stroke="#000000" points="0.0190986741114,0.319184192481 0.247025342049,0.177091039068 0.235550314041,0.424760133224 0.0190986741114,0.573100884905" />',
+      '<polygon fill="${c[13]}" stroke="#000000" points="0.284320264841,0.152776875121 0.488246122608,0.0256462130776 0.467594360539,0.266978597956 0.272845236833,0.400445969277" />',
+      '<polygon fill="${c[14]}" stroke="#000000" points="0.521782650322,0.00377667342169 0.705309035284,-0.110636628934 0.677285677909,0.124384937577 0.501130888253,0.2451090583" />',
+      '<polygon fill="${c[15]}" stroke="#000000" points="0.0181832343963,0.615263518691 0.234634874326,0.466922767011 0.224259890887,0.690849257498 0.0181832343963,0.843550846245" />',
+      '<polygon fill="${c[16]}" stroke="#000000" points="0.270176847485,0.441649489407 0.464925971191,0.308182118085 0.446159253256,0.527486252065 0.259801864047,0.665575979894" />',
+      '<polygon fill="${c[17]}" stroke="#000000" points="0.497051417024,0.285333873902 0.67320620668,0.164609753178 0.647623961491,0.379158611785 0.478284699089,0.504638007881" />',
+      '<polygon fill="${c[18]}" stroke="#000000" points="-0.741333479677,-0.412760362386 -0.549811558141,-0.306630766315 -0.52697571533,-0.039775648197 -0.710502100292,-0.154188950552" />',
+      '<polygon fill="${c[19]}" stroke="#000000" points="-0.514919107026,-0.286048978834 -0.300917227551,-0.167462381306 -0.288157406448,0.107936801328 -0.492083264215,-0.0191938607162" />',
+      '<polygon fill="${c[20]}" stroke="#000000" points="-0.261923532191,-0.144461226811 -0.0212370431507,-0.0110876701087 -0.0212370431507,0.273031109235 -0.249163711089,0.130937955822" />',
+      '<polygon fill="${c[21]}" stroke="#000000" points="-0.705959470164,-0.110079792019 -0.522433085202,0.0043335103365 -0.501781323133,0.245665895215 -0.677936112789,0.124941774492" />',
+      '<polygon fill="${c[22]}" stroke="#000000" points="-0.489055834437,0.0262053344844 -0.28512997667,0.153335996528 -0.273654948662,0.401005090684 -0.468404072368,0.267537719363" />',
+      '<polygon fill="${c[23]}" stroke="#000000" points="-0.248037844521,0.177642297739 -0.0201111765828,0.319735451152 -0.0201111765828,0.573652143575 -0.236562816513,0.425311391895" />',
+      '<polygon fill="${c[24]}" stroke="#000000" points="-0.673807576732,0.1650293363 -0.497652787076,0.285753457023 -0.478886069141,0.505057591002 -0.648225331543,0.379578194906" />',
+      '<polygon fill="${c[25]}" stroke="#000000" points="-0.465666418353,0.308589973071 -0.270917294647,0.442057344393 -0.260542311208,0.66598383488 -0.446899700418,0.527894107051" />',
+      '<polygon fill="${c[26]}" stroke="#000000" points="-0.235550314041,0.467307546752 -0.0190986741114,0.615648298432 -0.0190986741114,0.843935625986 -0.225175330603,0.691234037239" />',
     ];
   }
 

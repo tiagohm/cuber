@@ -1,7 +1,7 @@
-<div style="text-align: center">
+<p align="center">
 <img src="https://raw.githubusercontent.com/tiagohm/cuber/master/cube.svg" height="128" alt="Cuber" />
-<h1>Cuber</h1>
-</div>
+</p>
+<h1 align="center">Cuber</h1>
 
 This is a Dart implementation of Herbert Kociemba's two-phase algorithm for solving Rubik's Cube. This was inspired by C implementation of [muodov/kociemba](https://github.com/muodov/kociemba) and [tremwil/TwoPhaseSolver](https://github.com/tremwil/TwoPhaseSolver) projects.
 

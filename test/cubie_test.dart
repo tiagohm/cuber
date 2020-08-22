@@ -677,6 +677,12 @@ void main() {
       );
     });
   });
+
+  test('correct orientation', () {
+    const d = 'DUUDDDDUULLRRRRLLRBBBFBFFBFDDUUUUDDURRLLLLRRLBFBBFBFFF';
+    final cube = Cube.from(d);
+    expect(cube, Cube.sixTs);
+  });
 }
 
 void expectSolution(

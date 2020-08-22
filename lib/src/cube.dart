@@ -61,6 +61,11 @@ const _edgeColor = [
   [Color.bottom, Color.right],
 ];
 
+const _rotation = [
+  [null, 8, 0, 1, 6, 2],
+  [6, null, 5, 8, 7, 3],
+];
+
 /// The [Cube]'s status.
 enum CubeStatus {
   /// The cube is ok.
@@ -150,6 +155,8 @@ class Cube extends Equatable {
     if (colors == null || colors.length != 54) {
       throw ArgumentError('Invalid definition');
     }
+
+    colors = _correctOrientation(colors);
 
     final cp = List.filled(cornerCount, Corner.upRightFront);
     final co = List.filled(cornerCount, 0);
@@ -1100,6 +1107,133 @@ class Cube extends Equatable {
     Duration timeout = Solver.defaultTimeout,
   }) {
     return solver?.solve(this, maxDepth: maxDepth, timeout: timeout);
+  }
+
+  static List<Color> _correctOrientation(List<Color> input) {
+    return _findRotation(input).fold(input, _applyRotation);
+  }
+
+  static List<Color> _applyRotation(
+    List<Color> input,
+    int rotation,
+  ) {
+    final type = rotation ~/ 3;
+    final power = rotation % 3;
+
+    for (var i = 0; i <= power; i++) {
+      if (type == 0) {
+        input = _rotateX(input);
+      } else if (type == 1) {
+        input = _rotateY(input);
+      } else {
+        input = _rotateZ(input);
+      }
+    }
+
+    return input;
+  }
+
+  static List<int> _findRotation(List<Color> input) {
+    return [
+      for (var i = 4; i < 54; i += 9)
+        if (input[i] == Color.up && _rotation[0][i ~/ 9] != null)
+          _rotation[0][i ~/ 9]
+        else if (input[i] == Color.right && _rotation[1][i ~/ 9] != null)
+          _rotation[1][i ~/ 9]
+    ];
+  }
+
+  static void _rotateCW(List<Color> input) {
+    final a = input[0];
+    final b = input[1];
+    input[0] = input[6];
+    input[1] = input[3];
+    input[6] = input[8];
+    input[3] = input[7];
+    input[8] = input[2];
+    input[7] = input[5];
+    input[2] = a;
+    input[5] = b;
+  }
+
+  static void _rotateCCW(List<Color> input) {
+    final a = input[0];
+    final b = input[1];
+    input[0] = input[2];
+    input[1] = input[5];
+    input[2] = input[8];
+    input[5] = input[7];
+    input[8] = input[6];
+    input[7] = input[3];
+    input[6] = a;
+    input[3] = b;
+  }
+
+  static List<Color> _rotateX(List<Color> input) {
+    final up = input.sublist(0, 9).reversed;
+    final right = input.sublist(9, 18);
+    final front = input.sublist(18, 27);
+    final down = input.sublist(27, 36);
+    final left = input.sublist(36, 45);
+    final bottom = input.sublist(45, 54).reversed;
+
+    _rotateCW(right);
+    _rotateCCW(left);
+
+    return [
+      ...front,
+      ...right,
+      ...down,
+      ...bottom,
+      ...left,
+      ...up,
+    ];
+  }
+
+  static List<Color> _rotateY(List<Color> input) {
+    final up = input.sublist(0, 9);
+    final right = input.sublist(9, 18);
+    final front = input.sublist(18, 27);
+    final down = input.sublist(27, 36);
+    final left = input.sublist(36, 45);
+    final bottom = input.sublist(45, 54);
+
+    _rotateCW(up);
+    _rotateCCW(down);
+
+    return [
+      ...up,
+      ...bottom,
+      ...right,
+      ...down,
+      ...front,
+      ...left,
+    ];
+  }
+
+  static List<Color> _rotateZ(List<Color> input) {
+    final up = input.sublist(0, 9);
+    final right = input.sublist(9, 18);
+    final front = input.sublist(18, 27);
+    final down = input.sublist(27, 36);
+    final left = input.sublist(36, 45);
+    final bottom = input.sublist(45, 54);
+
+    _rotateCW(front);
+    _rotateCCW(bottom);
+    _rotateCW(up);
+    _rotateCW(right);
+    _rotateCW(down);
+    _rotateCW(left);
+
+    return [
+      ...left,
+      ...up,
+      ...front,
+      ...right,
+      ...down,
+      ...bottom,
+    ];
   }
 
   @override

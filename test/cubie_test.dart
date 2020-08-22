@@ -560,6 +560,48 @@ void main() {
       'R U2 F2 B2 U2 F2 B2 R L2 U F2 B2 U2 R2 L2 D F2 B2',
     );
 
+    expect(Cube.cubeInCube.verify(), CubeStatus.ok);
+    expect(
+      Cube.cubeInCube.solve().toString(),
+      "U' B2 D' F' L F' L F' L D B2 U' F2 R2 U2",
+    );
+
+    expect(Cube.cubeInCubeInCube.verify(), CubeStatus.ok);
+    expect(
+      Cube.cubeInCubeInCube.solve().toString(),
+      "U R D B R2 F2 R L2 B2 D B' R2 D2 R2 D' L2 F2 U' B2 D' F2",
+    );
+
+    expect(Cube.anaconda.verify(), CubeStatus.ok);
+    expect(
+      Cube.anaconda.solve().toString(),
+      "R B U' R' U' B2 U L B L' U B2 U' B2 U' L2 U' L2 U' B2",
+    );
+
+    expect(Cube.python.verify(), CubeStatus.ok);
+    expect(
+      Cube.python.solve().toString(),
+      "U R U F' L2 F U' R' F2 U' F2 U L2 U' F2 D L2 D'",
+    );
+
+    expect(Cube.twister.verify(), CubeStatus.ok);
+    expect(
+      Cube.twister.solve().toString(),
+      "U' F2 U R' U2 R F' R2 F' U2 R2 F2 R2 U2 F2 R2 U' F2 U",
+    );
+
+    expect(Cube.tetris.verify(), CubeStatus.ok);
+    expect(
+      Cube.tetris.solve().toString(),
+      "U D F B R L F2 R2 F2 R2 U' D' R2 F2 L2 B2",
+    );
+
+    expect(Cube.chickenFeet.verify(), CubeStatus.ok);
+    expect(
+      Cube.chickenFeet.solve().toString(),
+      "R B2 U2 L' F' U D R' L' F' L2 F2 D R2 F2 U B2 D L2 U'",
+    );
+
     expect(Cube.fourSpots.verify(), CubeStatus.ok);
     expect(
       Cube.fourSpots.solve().toString(),

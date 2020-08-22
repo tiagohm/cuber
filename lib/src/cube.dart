@@ -266,6 +266,34 @@ class Cube extends Equatable {
   static final crossTwo =
       Cube.from('RURUUURURFRFRRRFRFUFUFFFUFULDLDDDLDLBLBLLLBLBDBDBBBDBD');
 
+  /// A [Cube] from a cube-in-cube-like pattern.
+  static final cubeInCube =
+      Cube.from('FFFFUUFUURRURRUUUURFFRFFRRRBBBDDBDDBDDDLLDLLDLLLLBBLBB');
+
+  /// A [Cube] from a cube-in-cube-in-cube-like pattern.
+  static final cubeInCubeInCube =
+      Cube.from('RRRRUURUFURFRRFFFFUFRUFFUUULLLDDLBDLBBBLLBDLBDDDDBBDBL');
+
+  /// A [Cube] from a anaconda-like pattern.
+  static final anaconda =
+      Cube.from('FUFUUFFFFUUUURRURURRRFFRRFRBDBBDDBBBDLDDLLDDDLBLBBLLLL');
+
+  /// A [Cube] from a python-like pattern.
+  static final python =
+      Cube.from('DUDDUDDUDFFFFRRFRFRFRFFRRRRUUUDDDUUUBBBBLLBLBLBLBBLLLL');
+
+  /// A [Cube] from a twister-like pattern.
+  static final twister =
+      Cube.from('RURRUURUURRFRRFFRFUFFFFFUUULLLDDDDDLBBBLLLLLBDBDDBBDBB');
+
+  /// A [Cube] from a tetris-like pattern.
+  static final tetris =
+      Cube.from('FFBFUBFBBUDDURDUUDRLLRFLRRLBBFBDFBFFUDDULDUUDLRRLBRLLR');
+
+  /// A [Cube] from a chicken-feet-like pattern.
+  static final chickenFeet =
+      Cube.from('RRRRURRRURFFFRFFFFUUFUFUUUULLLLDLDLLBBBBLBLBBDDDDBDDDB');
+
   /// A [Cube] from a four-spots pattern.
   static final fourSpots =
       Cube.from('UUUUUUUUULLLLRLLLLBBBBFBBBBDDDDDDDDDRRRRLRRRRFFFFBFFFF');

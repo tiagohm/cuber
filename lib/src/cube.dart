@@ -1150,11 +1150,11 @@ class Cube extends Equatable {
 
   static List<Rotation> _findRotation(List<Color> input) {
     return [
-      for (var i = 4; i < 54; i += 9)
-        if (input[i] == Color.up && _orientation[0][i ~/ 9] != null)
-          _orientation[0][i ~/ 9]
-        else if (input[i] == Color.right && _orientation[1][i ~/ 9] != null)
-          _orientation[1][i ~/ 9]
+      for (var i = 4, k = 0; i < 54; i += 9, k++)
+        if (input[i] == Color.up && _orientation[0][k] != null)
+          _orientation[0][k]
+        else if (input[i] == Color.right && _orientation[1][k] != null)
+          _orientation[1][k]
     ];
   }
 
@@ -1251,7 +1251,7 @@ class Cube extends Equatable {
     ];
   }
 
-  /// Generates a SVG image of 3 faces of the [Cube].
+  /// Generates an SVG image of the [Cube].
   String svg({
     int width = 1024,
     int height = 1024,

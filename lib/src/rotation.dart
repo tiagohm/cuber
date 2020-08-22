@@ -30,6 +30,9 @@ class Rotation extends Equatable {
   /// Creates an instance of [Rotation] class to rotate [n] times on [Axis.z].
   const Rotation.z([int n = 1]) : this(axis: Axis.x, n: n);
 
+  /// Invert the [Rotation].
+  Rotation inverse() => Rotation(axis: axis, n: -n);
+
   @override
   String toString() {
     final name = axis == Axis.z ? 'Z' : axis == Axis.y ? 'Y' : 'X';

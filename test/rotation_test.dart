@@ -35,4 +35,9 @@ void main() {
     expect(const Rotation.x(-2), const Rotation(axis: Axis.x, n: 2));
     expect(const Rotation.x(-3), const Rotation(axis: Axis.x, n: 1));
   });
+
+  test('inverse', () {
+    expect(const Rotation.x(1).inverse(), const Rotation.x(-1));
+    expect(const Rotation.x(1).inverse(), const Rotation(axis: Axis.x, n: 3));
+  });
 }

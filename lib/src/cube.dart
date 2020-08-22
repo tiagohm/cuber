@@ -225,21 +225,7 @@ class Cube extends Equatable {
   factory Cube.scrambled({
     int n = 20,
   }) {
-    var move = Move.random();
-    var cube = Cube.solved.move(move);
-    const colors = Color.values;
-
-    for (var i = 1; i < n; i++) {
-      final a = move;
-
-      do {
-        move = Move.random();
-      } while (move.color == a.color || move.color == colors[a.color.index]);
-
-      cube = cube.move(move);
-    }
-
-    return cube;
+    return Move.scramble(n: n).fold(Cube.solved, (a, b) => a.move(b));
   }
 
   /// A [Cube] from a checkerboard-like pattern.

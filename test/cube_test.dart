@@ -625,7 +625,7 @@ void main() {
     final cube = Cube.scrambled();
     print(cube.definition);
     expect(cube.verify(), CubeStatus.ok);
-    expect(cube.solve().toString(), isNotEmpty);
+    expect(cube.solve().moves.length, greaterThan(16));
   });
 
   group('move', () {

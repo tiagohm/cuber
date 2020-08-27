@@ -102,7 +102,11 @@ class Cube extends Equatable {
     List<int> co,
     List<Edge> ep,
     List<int> eo,
-  })  : _cp = cp ??
+  })  : assert(cp == null || cp.length == 8),
+        assert(co == null || co.length == 8),
+        assert(ep == null || ep.length == 12),
+        assert(eo == null || eo.length == 12),
+        _cp = cp ??
             const [
               Corner.upRightFront,
               Corner.upFrontLeft,
@@ -133,6 +137,9 @@ class Cube extends Equatable {
 
   /// The solved [Cube].
   static const solved = Cube._();
+
+  /// Returns `true` if the [Cube] is solved.
+  bool get isSolved => this == solved;
 
   /// Creates a [Cube] from the your [definition] string U..R..F..D..L..B.
   factory Cube.from(String definition) {
@@ -206,6 +213,16 @@ class Cube extends Equatable {
     int n = 20,
   }) {
     return Move.scramble(n: n).fold(Cube.solved, (a, b) => a.move(b));
+  }
+
+  /// Creates a [Cube] instance from a [json] object.
+  factory Cube.fromJson(json) {
+    return Cube._(
+      cp: [for (final item in json['cp']) Corner.values[item]],
+      co: [for (final item in json['co']) item],
+      ep: [for (final item in json['ep']) Edge.values[item]],
+      eo: [for (final item in json['eo']) item],
+    );
   }
 
   /// A [Cube] from a checkerboard-like pattern.
@@ -315,6 +332,16 @@ class Cube extends Equatable {
     }
 
     input[left] = temp;
+  }
+
+  /// Returns the [Cube] state as a json object.
+  Map<String, dynamic> toJson() {
+    return {
+      'cp': [for (final item in _cp) item.index],
+      'co': _co,
+      'ep': [for (final item in _ep) item.index],
+      'eo': _eo,
+    };
   }
 
   ///
@@ -1106,10 +1133,10 @@ class Cube extends Equatable {
     return solver?.solveDeeply(this, timeout: timeout);
   }
 
-  /// Returns the [Solution] for the [cube] using the [solver] algorithm
+  /// Returns the [Solution] for the [Cube] using the [solver] algorithm
   /// or `null` if the [timeout] is exceeded or there is no [Solution].
   ///
-  /// Returns [Solution.empty] if the [cube] is already [solved].
+  /// Returns [Solution.empty] if the [Cube] is already [solved].
   Solution solve({
     Solver solver = kociemba,
     int maxDepth = Solver.defaultMaxDepth,

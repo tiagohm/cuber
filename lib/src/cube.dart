@@ -62,25 +62,6 @@ const _edgeColor = [
   [Color.bottom, Color.right],
 ];
 
-const _orientation = [
-  [
-    null,
-    Rotation.z(3),
-    Rotation.x(),
-    Rotation.x(2),
-    Rotation.z(),
-    Rotation.x(3),
-  ],
-  [
-    Rotation.z(),
-    null,
-    Rotation.y(3),
-    Rotation.z(3),
-    Rotation.z(2),
-    Rotation.y(1),
-  ],
-];
-
 /// The [Cube]'s status.
 enum CubeStatus {
   /// The cube is ok.
@@ -164,14 +145,13 @@ class Cube extends Equatable {
     ]);
   }
 
-  /// Creates a [Cube] from a list of [colors]
-  /// representating your 54 facelets U..R..F..D..L..B.
-  factory Cube.of(List<Color> colors) {
-    if (colors == null || colors.length != 54) {
+  /// Creates a [Cube] from the your [definition] colors U..R..F..D..L..B.
+  factory Cube.of(List<Color> definition) {
+    if (definition == null || definition.length != 54) {
       throw ArgumentError('Invalid definition');
     }
 
-    colors = _correctOrientation(colors);
+    definition = Rotation.correctOrientation(definition);
 
     final cp = List.filled(cornerCount, Corner.upRightFront);
     final co = List.filled(cornerCount, 0);
@@ -182,14 +162,14 @@ class Cube extends Equatable {
       var ori = 0;
       // get the colors of the cube at corner i, starting with U/D
       for (; ori < 3; ori++) {
-        if (colors[_cornerFacelet[i][ori].index] == Color.up ||
-            colors[_cornerFacelet[i][ori].index] == Color.down) {
+        if (definition[_cornerFacelet[i][ori].index] == Color.up ||
+            definition[_cornerFacelet[i][ori].index] == Color.down) {
           break;
         }
       }
 
-      final a = colors[_cornerFacelet[i][(ori + 1) % 3].index];
-      final b = colors[_cornerFacelet[i][(ori + 2) % 3].index];
+      final a = definition[_cornerFacelet[i][(ori + 1) % 3].index];
+      final b = definition[_cornerFacelet[i][(ori + 2) % 3].index];
 
       for (var j = 0; j < cornerCount; j++) {
         if (a == _cornerColor[j][1] && b == _cornerColor[j][2]) {
@@ -202,15 +182,15 @@ class Cube extends Equatable {
 
     for (var i = 0; i < edgeCount; i++) {
       for (var j = 0; j < edgeCount; j++) {
-        if (colors[_edgeFacelet[i][0].index] == _edgeColor[j][0] &&
-            colors[_edgeFacelet[i][1].index] == _edgeColor[j][1]) {
+        if (definition[_edgeFacelet[i][0].index] == _edgeColor[j][0] &&
+            definition[_edgeFacelet[i][1].index] == _edgeColor[j][1]) {
           ep[i] = Edge.values[j];
           eo[i] = 0;
           break;
         }
 
-        if (colors[_edgeFacelet[i][0].index] == _edgeColor[j][1] &&
-            colors[_edgeFacelet[i][1].index] == _edgeColor[j][0]) {
+        if (definition[_edgeFacelet[i][0].index] == _edgeColor[j][1] &&
+            definition[_edgeFacelet[i][1].index] == _edgeColor[j][0]) {
           ep[i] = Edge.values[j];
           eo[i] = 1;
           break;
@@ -1138,133 +1118,6 @@ class Cube extends Equatable {
     return solver?.solve(this, maxDepth: maxDepth, timeout: timeout);
   }
 
-  static List<Color> _correctOrientation(List<Color> input) {
-    return _findRotation(input).fold(input, _applyRotation);
-  }
-
-  static List<Color> _applyRotation(
-    List<Color> input,
-    Rotation rotation,
-  ) {
-    final axis = rotation.axis;
-    final n = rotation.n;
-
-    for (var i = 1; i <= n; i++) {
-      if (axis == Axis.x) {
-        input = _rotateX(input);
-      } else if (axis == Axis.y) {
-        input = _rotateY(input);
-      } else {
-        input = _rotateZ(input);
-      }
-    }
-
-    return input;
-  }
-
-  static List<Rotation> _findRotation(List<Color> input) {
-    return [
-      for (var i = 4, k = 0; i < 54; i += 9, k++)
-        if (input[i] == Color.up && _orientation[0][k] != null)
-          _orientation[0][k]
-        else if (input[i] == Color.right && _orientation[1][k] != null)
-          _orientation[1][k]
-    ];
-  }
-
-  static void _rotateCW(List<Color> input) {
-    final a = input[0];
-    final b = input[1];
-    input[0] = input[6];
-    input[1] = input[3];
-    input[6] = input[8];
-    input[3] = input[7];
-    input[8] = input[2];
-    input[7] = input[5];
-    input[2] = a;
-    input[5] = b;
-  }
-
-  static void _rotateCCW(List<Color> input) {
-    final a = input[0];
-    final b = input[1];
-    input[0] = input[2];
-    input[1] = input[5];
-    input[2] = input[8];
-    input[5] = input[7];
-    input[8] = input[6];
-    input[7] = input[3];
-    input[6] = a;
-    input[3] = b;
-  }
-
-  static List<Color> _rotateX(List<Color> input) {
-    final up = input.sublist(0, 9).reversed;
-    final right = input.sublist(9, 18);
-    final front = input.sublist(18, 27);
-    final down = input.sublist(27, 36);
-    final left = input.sublist(36, 45);
-    final bottom = input.sublist(45, 54).reversed;
-
-    _rotateCW(right);
-    _rotateCCW(left);
-
-    return [
-      ...front,
-      ...right,
-      ...down,
-      ...bottom,
-      ...left,
-      ...up,
-    ];
-  }
-
-  static List<Color> _rotateY(List<Color> input) {
-    final up = input.sublist(0, 9);
-    final right = input.sublist(9, 18);
-    final front = input.sublist(18, 27);
-    final down = input.sublist(27, 36);
-    final left = input.sublist(36, 45);
-    final bottom = input.sublist(45, 54);
-
-    _rotateCW(up);
-    _rotateCCW(down);
-
-    return [
-      ...up,
-      ...bottom,
-      ...right,
-      ...down,
-      ...front,
-      ...left,
-    ];
-  }
-
-  static List<Color> _rotateZ(List<Color> input) {
-    final up = input.sublist(0, 9);
-    final right = input.sublist(9, 18);
-    final front = input.sublist(18, 27);
-    final down = input.sublist(27, 36);
-    final left = input.sublist(36, 45);
-    final bottom = input.sublist(45, 54);
-
-    _rotateCW(front);
-    _rotateCCW(bottom);
-    _rotateCW(up);
-    _rotateCW(right);
-    _rotateCW(down);
-    _rotateCW(left);
-
-    return [
-      ...left,
-      ...up,
-      ...front,
-      ...right,
-      ...down,
-      ...bottom,
-    ];
-  }
-
   /// Generates an SVG image of the [Cube].
   String svg({
     int width = 1024,
@@ -1301,7 +1154,7 @@ class Cube extends Equatable {
     orientation ??= const [];
 
     for (final rotation in orientation) {
-      cube = _applyRotation(cube, rotation);
+      cube = Rotation.rotate(cube, rotation);
     }
 
     final sb = StringBuffer();

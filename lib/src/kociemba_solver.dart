@@ -49,7 +49,7 @@ class KociembaSolver extends Solver {
     int maxDepth = Solver.defaultMaxDepth,
     Duration timeout = Solver.defaultTimeout,
   }) {
-    if (cube.verify() != CubeStatus.ok) {
+    if (cube.isNotOk) {
       return null;
     }
 

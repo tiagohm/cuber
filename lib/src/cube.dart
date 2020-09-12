@@ -1080,6 +1080,12 @@ class Cube extends Equatable {
     return CubeStatus.ok;
   }
 
+  /// Checks if [Cube]'s status is okay.
+  bool get isOk => verify() == CubeStatus.ok;
+
+  /// Checks if [Cube]'s status is not okay.
+  bool get isNotOk => !isOk;
+
   /// Turns a face of the [Cube] applying a [move].
   Cube move(Move move) {
     final type = move.color.index * 3;

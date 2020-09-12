@@ -17,7 +17,7 @@ void main() {
     expect(cube.computeUpBottomToDownFront(), 114);
     expect(cube.computeUpRightFrontToDownLeftFront(), 0);
     expect(cube.computeUpRightToBottomRight(), 0);
-    expect(cube.verify(), CubeStatus.ok);
+    expect(cube.isOk, true);
     expect(cube.definition,
         'UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB');
   });
@@ -26,14 +26,14 @@ void main() {
     const input = 'UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB';
     final cube = Cube.from(input);
     expect(cube.isSolved, true);
-    expect(cube.verify(), CubeStatus.ok);
+    expect(cube.isOk, true);
   });
 
   test('parse random cube input is not equals to solved cube', () {
     const input = 'DRLUUBFBRBLURRLRUBLRDDFDLFUFUFFDBRDUBRUFLLFDDBFLUBLRBD';
     final cube = Cube.from(input);
     expect(cube.isSolved, false);
-    expect(cube.verify(), CubeStatus.ok);
+    expect(cube.isOk, true);
   });
 
   test('solved cube solution is empty', () {
@@ -524,97 +524,97 @@ void main() {
   });
 
   test('predefinied patterns', () {
-    expect(Cube.checkerboard.verify(), CubeStatus.ok);
+    expect(Cube.checkerboard.isOk, true);
     expect(
       Cube.checkerboard.solve().toString(),
       "F' R L' F2 U D' R2 F' B R' U R2 L2 F2 B2 D B2 D2 B2 U2",
     );
 
-    expect(Cube.wire.verify(), CubeStatus.ok);
+    expect(Cube.wire.isOk, true);
     expect(
       Cube.wire.solve().toString(),
       "R L U2 R L F2 U' D' F2 B2 R2 U D F2",
     );
 
-    expect(Cube.spiral.verify(), CubeStatus.ok);
+    expect(Cube.spiral.isOk, true);
     expect(
       Cube.spiral.solve().toString(),
       "R2 L U F D2 B R' U2 L' U B' R2 U2 R2 D' B2 U F2 U' B2 U",
     );
 
-    expect(Cube.stripes.verify(), CubeStatus.ok);
+    expect(Cube.stripes.isOk, true);
     expect(
       Cube.stripes.solve().toString(),
       "R L' F U D' L2 B2 L F B' U' F2 D F2 B2 U B2 R2 F2 D",
     );
 
-    expect(Cube.crossOne.verify(), CubeStatus.ok);
+    expect(Cube.crossOne.isOk, true);
     expect(
       Cube.crossOne.solve().toString(),
       'U R2 L2 F2 U2 D2 R2 L2 B2 U D2',
     );
 
-    expect(Cube.crossTwo.verify(), CubeStatus.ok);
+    expect(Cube.crossTwo.isOk, true);
     expect(
       Cube.crossTwo.solve().toString(),
       'R U2 F2 B2 U2 F2 B2 R L2 U F2 B2 U2 R2 L2 D F2 B2',
     );
 
-    expect(Cube.cubeInCube.verify(), CubeStatus.ok);
+    expect(Cube.cubeInCube.isOk, true);
     expect(
       Cube.cubeInCube.solve().toString(),
       "U' B2 D' F' L F' L F' L D B2 U' F2 R2 U2",
     );
 
-    expect(Cube.cubeInCubeInCube.verify(), CubeStatus.ok);
+    expect(Cube.cubeInCubeInCube.isOk, true);
     expect(
       Cube.cubeInCubeInCube.solve().toString(),
       "U R D B R2 F2 R L2 B2 D B' R2 D2 R2 D' L2 F2 U' B2 D' F2",
     );
 
-    expect(Cube.anaconda.verify(), CubeStatus.ok);
+    expect(Cube.anaconda.isOk, true);
     expect(
       Cube.anaconda.solve().toString(),
       "R B U' R' U' B2 U L B L' U B2 U' B2 U' L2 U' L2 U' B2",
     );
 
-    expect(Cube.python.verify(), CubeStatus.ok);
+    expect(Cube.python.isOk, true);
     expect(
       Cube.python.solve().toString(),
       "U R U F' L2 F U' R' F2 U' F2 U L2 U' F2 D L2 D'",
     );
 
-    expect(Cube.twister.verify(), CubeStatus.ok);
+    expect(Cube.twister.isOk, true);
     expect(
       Cube.twister.solve().toString(),
       "U' F2 U R' U2 R F' R2 F' U2 R2 F2 R2 U2 F2 R2 U' F2 U",
     );
 
-    expect(Cube.tetris.verify(), CubeStatus.ok);
+    expect(Cube.tetris.isOk, true);
     expect(
       Cube.tetris.solve().toString(),
       "U D F B R L F2 R2 F2 R2 U' D' R2 F2 L2 B2",
     );
 
-    expect(Cube.chickenFeet.verify(), CubeStatus.ok);
+    expect(Cube.chickenFeet.isOk, true);
     expect(
       Cube.chickenFeet.solve().toString(),
       "R B2 U2 L' F' U D R' L' F' L2 F2 D R2 F2 U B2 D L2 U'",
     );
 
-    expect(Cube.fourSpots.verify(), CubeStatus.ok);
+    expect(Cube.fourSpots.isOk, true);
     expect(
       Cube.fourSpots.solve().toString(),
       "U R2 L2 U D' F2 B2 D'",
     );
 
-    expect(Cube.sixSpots.verify(), CubeStatus.ok);
+    expect(Cube.sixSpots.isOk, true);
     expect(
       Cube.sixSpots.solve().toString(),
       "U D F B R L U2 L2 F2 R2 D2 L2 B2 U' D' F2",
     );
 
-    expect(Cube.sixTs.verify(), CubeStatus.ok);
+    expect(Cube.sixTs.isOk, true);
     expect(
       Cube.sixTs.solve().toString(),
       "U D F2 R2 U D' L2 B2 D2",
@@ -624,7 +624,7 @@ void main() {
   test('scrambled cube', () {
     final cube = Cube.scrambled();
     print(cube.definition);
-    expect(cube.verify(), CubeStatus.ok);
+    expect(cube.isOk, true);
     expect(cube.solve().algorithm.length, greaterThan(16));
   });
 

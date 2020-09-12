@@ -45,7 +45,7 @@ final cube11 = Cube.sixSpots;
 final cube12 = Cube.sixTs;
 
 // The cube is mounted correctly.
-final isOk = cube0.verify() == CubeStatus.ok;
+final isOk = cube0.verify() == CubeStatus.ok; // or cube0.isOk
 // The cube is solved.
 final isSolved = cube1.isSolved;
 

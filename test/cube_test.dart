@@ -27,6 +27,7 @@ void main() {
     final cube = Cube.from(input);
     expect(cube.isSolved, true);
     expect(cube.isOk, true);
+    print(cube.prettyDefinition);
   });
 
   test('parse random cube input is not equals to solved cube', () {
@@ -34,6 +35,7 @@ void main() {
     final cube = Cube.from(input);
     expect(cube.isSolved, false);
     expect(cube.isOk, true);
+    print(cube.prettyDefinition);
   });
 
   test('solved cube solution is empty', () {

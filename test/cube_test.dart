@@ -25,14 +25,14 @@ void main() {
   test('parse solved cube input is equals to solved cube', () {
     const input = 'UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB';
     final cube = Cube.from(input);
-    expect(cube, Cube.solved);
+    expect(cube.isSolved, true);
     expect(cube.verify(), CubeStatus.ok);
   });
 
   test('parse random cube input is not equals to solved cube', () {
     const input = 'DRLUUBFBRBLURRLRUBLRDDFDLFUFUFFDBRDUBRUFLLFDDBFLUBLRBD';
     final cube = Cube.from(input);
-    expect(cube, isNot(Cube.solved));
+    expect(cube.isSolved, false);
     expect(cube.verify(), CubeStatus.ok);
   });
 
@@ -625,7 +625,7 @@ void main() {
     final cube = Cube.scrambled();
     print(cube.definition);
     expect(cube.verify(), CubeStatus.ok);
-    expect(cube.solve().moves.length, greaterThan(16));
+    expect(cube.solve().algorithm.length, greaterThan(16));
   });
 
   group('move', () {

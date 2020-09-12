@@ -212,7 +212,7 @@ class Cube extends Equatable {
   factory Cube.scrambled({
     int n = 20,
   }) {
-    return Move.scramble(n: n).fold(Cube.solved, (a, b) => a.move(b));
+    return Algorithm.scramble(n: n).apply(Cube.solved);
   }
 
   /// Creates a [Cube] instance from a [json] object.

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cuber/src/algorithm.dart';
 import 'package:cuber/src/color.dart';
 import 'package:equatable/equatable.dart';
 
@@ -138,29 +139,6 @@ class Move extends Equatable {
   /// Inverts the [Move].
   Move inverse() {
     return double ? this : Move(color, double: false, inverted: !inverted);
-  }
-
-  /// Generates [n] random [Move]s.
-  static List<Move> scramble({
-    int n = 20,
-  }) {
-    final moves = <Move>[];
-    const colors = Color.values;
-
-    var move = Move.random();
-    moves.add(move);
-
-    for (var i = 1; i < n; i++) {
-      final a = move;
-
-      do {
-        move = Move.random();
-      } while (move.color == a.color || move.color == colors[a.color.index]);
-
-      moves.add(move);
-    }
-
-    return moves;
   }
 
   @override

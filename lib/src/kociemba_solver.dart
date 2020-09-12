@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cuber/src/algorithm.dart';
 import 'package:cuber/src/move.dart';
 import 'package:cuber/src/prune_tables/flipMoveTable.dart';
 import 'package:cuber/src/prune_tables/frontRightToBottomRightMoveTable.dart';
@@ -52,7 +53,7 @@ class KociembaSolver extends Solver {
       return null;
     }
 
-    if (cube == Cube.solved) {
+    if (cube.isSolved) {
       return Solution.empty;
     }
 
@@ -165,8 +166,8 @@ class KociembaSolver extends Solver {
               (search.ax[depthPhaseOne - 1] != search.ax[depthPhaseOne] &&
                   search.ax[depthPhaseOne - 1] !=
                       search.ax[depthPhaseOne] + 3)) {
-            final moves = _moves(search, s);
-            return Solution(moves: moves, elapsedTime: sw.elapsed);
+            final algorithm = _algorithm(search, s);
+            return Solution(algorithm: algorithm, elapsedTime: sw.elapsed);
           }
         }
       }
@@ -348,7 +349,7 @@ class KociembaSolver extends Solver {
     [Move.bottom, Move.bottomDouble, Move.bottomInv],
   ];
 
-  static List<Move> _moves(
+  static Algorithm _algorithm(
     _Search search,
     int length,
   ) {
@@ -358,6 +359,6 @@ class KociembaSolver extends Solver {
       moves.add(_moveTable[search.ax[i]][search.po[i] - 1]);
     }
 
-    return moves;
+    return Algorithm(moves: moves);
   }
 }

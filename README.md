@@ -54,7 +54,7 @@ final cube13 = cube0.move(Move.front).move(Move.rightDouble).move(Move.upInv);
 
 // Find solutions.
 final solution0 = cube11.solve(maxDepth: 25, duration: Duration(minutes: 1));
-print(solution0.moves);
+print(solution0.algorithm.moves);
 // Stream<Solution>.
 final solutions = cube11.solveDeeply(duration: Duration(minutes: 1));
 

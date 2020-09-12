@@ -745,6 +745,16 @@ void main() {
       }
     }
   });
+
+  test('feliksZemdegs422', () async {
+    final feliksZemdegs422 = Cube.feliksZemdegs422;
+    expect(feliksZemdegs422.isOk, true);
+  });
+
+  test('yushengDu347', () async {
+    final yushengDu347 = Cube.yushengDu347;
+    expect(yushengDu347.isOk, true);
+  });
 }
 
 void expectSolution(

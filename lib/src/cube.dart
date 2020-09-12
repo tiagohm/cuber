@@ -289,6 +289,16 @@ class Cube extends Equatable {
   static final sixTs =
       Cube.from('DDUUUUDDURLLRRRRLLFFFBFBBFBDUUDDDDUULRRLLLLRRFBFFBFBBB');
 
+  /// Rubik's Cube World Record by Feliks Zemdegs on May 6th, 2018,
+  /// at Cube for Cambodia 2018 (Melbourne, Australia) in 4.22 seconds.
+  static final feliksZemdegs422 =
+      Cube.from('FFUUUULRUBLFURFULBFURLFBBRBLDLLDDURRRFDDLFLBDRRDDBBDBF');
+
+  /// Rubik's Cube World Record by Yusheng Du (杜宇生) on Nov 24th, 2018,
+  /// at Wuhu Open 2018 (Wuhu, China) in 3.47 seconds.
+  static final yushengDu347 =
+      Cube.from('LRUUUBBRRDLFDRRFFBRFFFFLUULLRDBDDLURULUULLBDBRBFDBFDBD');
+
   static int _cnk(
     int n,
     int k,

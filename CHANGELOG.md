@@ -1,3 +1,6 @@
+# 0.3.0
+* Null safety support.
+
 # 0.2.0
 * Implement auto-reorientation when using `Cube.from` and `Cube.of`.
 * Support to generate SVG image of the cube.

@@ -19,7 +19,7 @@ Add this to your package's pubspec.yaml file:
 
 ```yaml
 dependencies:
-  cuber: ^0.2.0
+  cuber: ^0.3.0
 ```
 
 ## Usage

@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:cuber/src/algorithm.dart';
 import 'package:cuber/src/color.dart';
 import 'package:equatable/equatable.dart';
 
@@ -22,8 +21,7 @@ class Move extends Equatable {
     this.color, {
     this.inverted = false,
     this.double = false,
-  })  : assert(color != null),
-        assert(!inverted || !double);
+  }) : assert(!inverted || !double);
 
   /// Front clockwise move.
   static const front = Move(Color.front);
@@ -103,7 +101,7 @@ class Move extends Equatable {
 
   /// Parses a [move] from [String].
   factory Move.parse(String move) {
-    if (move == null || move.isEmpty || move.length > 2) {
+    if (move.isEmpty || move.length > 2) {
       throw ArgumentError('Invalid move: $move');
     }
 
@@ -113,11 +111,7 @@ class Move extends Equatable {
 
     final color = colorFromString(letter);
 
-    if (color != null) {
-      return Move(color, inverted: inverted, double: double);
-    } else {
-      throw ArgumentError('Invalid move: $move');
-    }
+    return Move(color, inverted: inverted, double: double);
   }
 
   static final _random = Random();
@@ -144,7 +138,11 @@ class Move extends Equatable {
   @override
   String toString() {
     final a = stringFromColor(color);
-    final b = inverted ? "'" : double ? '2' : '';
+    final b = inverted
+        ? "'"
+        : double
+            ? '2'
+            : '';
     return '$a$b';
   }
 

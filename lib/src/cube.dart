@@ -97,43 +97,41 @@ class Cube extends Equatable {
   /// Edge orientation.
   final List<int> _eo;
 
+  static const _defaultCornerPositions = [
+    Corner.upRightFront,
+    Corner.upFrontLeft,
+    Corner.upLeftBottom,
+    Corner.upBottomRight,
+    Corner.downFrontRight,
+    Corner.downLeftFront,
+    Corner.downBottomLeft,
+    Corner.downRightBottom,
+  ];
+
+  static const _defaultEdgePositions = [
+    Edge.upRight,
+    Edge.upFront,
+    Edge.upLeft,
+    Edge.upBottom,
+    Edge.downRight,
+    Edge.downFront,
+    Edge.downLeft,
+    Edge.downBottom,
+    Edge.frontRight,
+    Edge.frontLeft,
+    Edge.bottomLeft,
+    Edge.bottomRight,
+  ];
+
   const Cube._({
-    List<Corner> cp,
-    List<int> co,
-    List<Edge> ep,
-    List<int> eo,
-  })  : assert(cp == null || cp.length == 8),
-        assert(co == null || co.length == 8),
-        assert(ep == null || ep.length == 12),
-        assert(eo == null || eo.length == 12),
-        _cp = cp ??
-            const [
-              Corner.upRightFront,
-              Corner.upFrontLeft,
-              Corner.upLeftBottom,
-              Corner.upBottomRight,
-              Corner.downFrontRight,
-              Corner.downLeftFront,
-              Corner.downBottomLeft,
-              Corner.downRightBottom,
-            ],
-        _co = co ?? const [0, 0, 0, 0, 0, 0, 0, 0],
-        _ep = ep ??
-            const [
-              Edge.upRight,
-              Edge.upFront,
-              Edge.upLeft,
-              Edge.upBottom,
-              Edge.downRight,
-              Edge.downFront,
-              Edge.downLeft,
-              Edge.downBottom,
-              Edge.frontRight,
-              Edge.frontLeft,
-              Edge.bottomLeft,
-              Edge.bottomRight,
-            ],
-        _eo = eo ?? const [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    List<Corner> cp = _defaultCornerPositions,
+    List<int> co = const [0, 0, 0, 0, 0, 0, 0, 0],
+    List<Edge> ep = _defaultEdgePositions,
+    List<int> eo = const [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  })  : _cp = cp,
+        _co = co,
+        _ep = ep,
+        _eo = eo;
 
   /// The solved [Cube].
   static const solved = Cube._();
@@ -143,7 +141,7 @@ class Cube extends Equatable {
 
   /// Creates a [Cube] from the your [definition] string U..R..F..D..L..B.
   factory Cube.from(String definition) {
-    if (definition == null || definition.length != 54) {
+    if (definition.length != 54) {
       throw ArgumentError('Invalid definition');
     }
 
@@ -154,7 +152,7 @@ class Cube extends Equatable {
 
   /// Creates a [Cube] from the your [definition] colors U..R..F..D..L..B.
   factory Cube.of(List<Color> definition) {
-    if (definition == null || definition.length != 54) {
+    if (definition.length != 54) {
       throw ArgumentError('Invalid definition');
     }
 
@@ -356,8 +354,8 @@ class Cube extends Equatable {
 
   ///
   Cube cornerMultiply(Cube b) {
-    final cp = List<Corner>(cornerCount);
-    final co = List<int>(cornerCount);
+    final cp = List.filled(cornerCount, Corner.upRightFront);
+    final co = List.filled(cornerCount, 0);
 
     for (var corner = 0; corner < cornerCount; corner++) {
       cp[corner] = _cp[b._cp[corner].index];
@@ -408,8 +406,8 @@ class Cube extends Equatable {
 
   ///
   Cube edgeMultiply(Cube b) {
-    final ep = List<Edge>(12);
-    final eo = List<int>(12);
+    final ep = List.filled(12, Edge.upRight);
+    final eo = List.filled(12, 0);
 
     for (var edge = 0; edge < edgeCount; edge++) {
       ep[edge] = _ep[b._ep[edge].index];
@@ -427,13 +425,13 @@ class Cube extends Equatable {
   ///
   Cube inverse() {
     final cpA = List.of(_cp);
-    final cpB = List<Corner>(cornerCount);
+    final cpB = List.filled(cornerCount, Corner.upRightFront);
     final coA = List.of(_co);
-    final coB = List<int>(cornerCount);
+    final coB = List.filled(cornerCount, 0);
     final epA = List.of(_ep);
-    final epB = List<Edge>(edgeCount);
+    final epB = List.filled(edgeCount, Edge.upRight);
     final eoA = List.of(_eo);
-    final eoB = List<int>(edgeCount);
+    final eoB = List.filled(edgeCount, 0);
 
     for (var edge = 0; edge < edgeCount; edge++) {
       epB[epA[edge].index] = Edge.values[edge];
@@ -472,7 +470,7 @@ class Cube extends Equatable {
 
   /// Returns the facelet colors.
   List<Color> get colors {
-    final res = List<Color>(54);
+    final res = List.filled(54, Color.up);
 
     for (var i = 0; i < cornerCount; i++) {
       final k = _cp[i].index;
@@ -592,7 +590,7 @@ class Cube extends Equatable {
 
   ///
   int computeFrontRightToBottomRight() {
-    final edge = List<Edge>(4);
+    final edge = List.filled(4, Edge.upRight);
     var a = 0, x = 0, b = 0;
 
     // compute the index a < (12 choose 4) and the permutation array.
@@ -621,7 +619,7 @@ class Cube extends Equatable {
 
   ///
   Cube frontRightToBottomRight(int index) {
-    final ep = List.filled(edgeCount, Edge.downBottom);
+    final ep = List.filled(edgeCount, Edge.upRight);
 
     final sliceEdge = [
       Edge.frontRight, Edge.frontLeft, //
@@ -673,7 +671,7 @@ class Cube extends Equatable {
 
   ///
   int computeUpRightFrontToDownLeftFront() {
-    final corner = List<Corner>(6);
+    final corner = List.filled(6, Corner.upRightFront);
     var a = 0, x = 0, b = 0;
 
     // compute the index a < (8 choose 6) and the permutation array.
@@ -752,7 +750,7 @@ class Cube extends Equatable {
 
   ///
   int computeUpRightToDownFront() {
-    final edge = List<Edge>(6);
+    final edge = List.filled(6, Edge.upRight);
     var a = 0, x = 0, b = 0;
 
     // compute the index a < (12 choose 6) and the permutation array.
@@ -832,7 +830,7 @@ class Cube extends Equatable {
 
   ///
   int computeUpRightToUpLeft() {
-    final edge = List<Edge>(3);
+    final edge = List.filled(3, Edge.upRight);
     var a = 0, x = 0, b = 0;
 
     // compute the index a < (12 choose 3) and the permutation array.
@@ -891,7 +889,7 @@ class Cube extends Equatable {
 
   ///
   int computeUpBottomToDownFront() {
-    final edge = List<Edge>(3);
+    final edge = List.filled(3, Edge.upRight);
     var a = 0, x = 0, b = 0;
 
     // compute the index a < (12 choose 3) and the permutation array.
@@ -1099,7 +1097,11 @@ class Cube extends Equatable {
   /// Turns a face of the [Cube] applying a [move].
   Cube move(Move move) {
     final type = move.color.index * 3;
-    final power = move.inverted ? 2 : move.double ? 1 : 0;
+    final power = move.inverted
+        ? 2
+        : move.double
+            ? 1
+            : 0;
     return _move(type + power);
   }
 
@@ -1110,10 +1112,10 @@ class Cube extends Equatable {
     var cube = this;
 
     for (var i = 0; i <= power; ++i) {
-      final cp = List<Corner>(cornerCount);
-      final co = List<int>(cornerCount);
-      final ep = List<Edge>(edgeCount);
-      final eo = List<int>(edgeCount);
+      final cp = List.filled(cornerCount, Corner.upRightFront);
+      final co = List.filled(cornerCount, 0);
+      final ep = List.filled(edgeCount, Edge.upRight);
+      final eo = List.filled(edgeCount, 0);
 
       for (var k = 0; k < cornerCount; k++) {
         final m = cornerMoveTable[type][k];
@@ -1146,27 +1148,27 @@ class Cube extends Equatable {
     Solver solver = kociemba,
     Duration timeout = Solver.defaultTimeout,
   }) {
-    return solver?.solveDeeply(this, timeout: timeout);
+    return solver.solveDeeply(this, timeout: timeout);
   }
 
   /// Returns the [Solution] for the [Cube] using the [solver] algorithm
   /// or `null` if the [timeout] is exceeded or there is no [Solution].
   ///
   /// Returns [Solution.empty] if the [Cube] is already [solved].
-  Solution solve({
+  Solution? solve({
     Solver solver = kociemba,
     int maxDepth = Solver.defaultMaxDepth,
     Duration timeout = Solver.defaultTimeout,
   }) {
-    return solver?.solve(this, maxDepth: maxDepth, timeout: timeout);
+    return solver.solve(this, maxDepth: maxDepth, timeout: timeout);
   }
 
   /// Generates an SVG image of the [Cube].
   String svg({
     int width = 1024,
     int height = 1024,
-    Map<Color, String> colors,
-    List<Rotation> orientation,
+    Map<Color, String> colors = const <Color, String>{},
+    List<Rotation> orientation = const [],
   }) {
     return _svg(
       this.colors,
@@ -1177,25 +1179,22 @@ class Cube extends Equatable {
     );
   }
 
+  static const _defaultSVGColors = {
+    Color.up: '#FFFF00',
+    Color.right: '#FF9800',
+    Color.front: '#4CAF50',
+    Color.down: '#FFFFFF',
+    Color.left: '#F44336',
+    Color.bottom: '#3F51B5',
+  };
+
   static String _svg(
     List<Color> cube, {
-    int width,
-    int height,
-    Map<Color, String> colors,
-    List<Rotation> orientation,
+    int width = 1024,
+    int height = 1024,
+    Map<Color, String> colors = const <Color, String>{},
+    List<Rotation> orientation = const [],
   }) {
-    // Defaults.
-    width ??= 1024;
-    height ??= 1024;
-    colors ??= <Color, String>{};
-    colors[Color.up] ??= '#FFFF00';
-    colors[Color.right] ??= '#FF9800';
-    colors[Color.front] ??= '#4CAF50';
-    colors[Color.down] ??= '#FFFFFF';
-    colors[Color.left] ??= '#F44336';
-    colors[Color.bottom] ??= '#3F51B5';
-    orientation ??= const [];
-
     for (final rotation in orientation) {
       cube = Rotation.rotate(cube, rotation);
     }
@@ -1237,7 +1236,8 @@ class Cube extends Equatable {
 
     for (var i = 0; i < 3; i++) {
       for (var k = 0; k < 9; k++) {
-        facelets.add(colors[cube[i * 9 + k]]);
+        final color = cube[i * 9 + k];
+        facelets.add(colors[color] ?? _defaultSVGColors[color]!);
       }
     }
 

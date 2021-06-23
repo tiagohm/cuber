@@ -25,9 +25,7 @@ class Algorithm extends Equatable with ListMixin<Move> implements List<Move> {
     for (var i = 0; i < text.length; i++) {
       final c = text[i];
 
-      if (ignoreChars.contains(c)) {
-        continue;
-      }
+      if (ignoreChars.contains(c)) continue;
 
       if (i + 1 < text.length && (text[i + 1] == "'" || text[i + 1] == '2')) {
         moves.add(Move.parse(c + text[++i]));
@@ -74,7 +72,7 @@ class Algorithm extends Equatable with ListMixin<Move> implements List<Move> {
   Cube apply(
     Cube cube, {
     int n = 1,
-    void Function(Cube cube, Move move, int step, int total) onProgress,
+    void Function(Cube cube, Move move, int step, int total)? onProgress,
   }) {
     for (var i = 0, c = 1; i < n; i++) {
       for (var k = 0; k < length; k++, c++) {
@@ -88,9 +86,7 @@ class Algorithm extends Equatable with ListMixin<Move> implements List<Move> {
   }
 
   @override
-  String toString() {
-    return _moves.join(' ');
-  }
+  String toString() => _moves.join(' ');
 
   @override
   void operator []=(int index, Move value) {

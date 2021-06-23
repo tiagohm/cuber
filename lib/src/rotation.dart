@@ -2,7 +2,6 @@ import 'package:cuber/src/axis.dart';
 import 'package:cuber/src/color.dart';
 import 'package:cuber/src/cube.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 const _orientation = [
   [
@@ -33,11 +32,9 @@ class Rotation extends Equatable {
 
   /// Creates an instance of [Rotation] class.
   const Rotation({
-    @required this.axis,
+    required this.axis,
     int n = 1,
-  })  : assert(axis != null),
-        assert(n != null),
-        n = (n >= 0 ? n : n >= -4 ? n + 4 : -n - 4) % 4;
+  })  : n = (n >= 0 ? n : n >= -4 ? n + 4 : -n - 4) % 4;
 
   /// An instance of [Rotate] class that do not apply the rotation.
   static const none = Rotation(axis: Axis.x, n: 0);
@@ -85,9 +82,9 @@ class Rotation extends Equatable {
     return [
       for (var i = 4, k = 0; i < 54; i += 9, k++)
         if (input[i] == Color.up && _orientation[0][k] != null)
-          _orientation[0][k]
+          _orientation[0][k]!
         else if (input[i] == Color.right && _orientation[1][k] != null)
-          _orientation[1][k]
+          _orientation[1][k]!
     ];
   }
 

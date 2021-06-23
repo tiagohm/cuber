@@ -44,7 +44,7 @@ class KociembaSolver extends Solver {
   const KociembaSolver();
 
   @override
-  Solution solve(
+  Solution? solve(
     Cube cube, {
     int maxDepth = Solver.defaultMaxDepth,
     Duration timeout = Solver.defaultTimeout,
@@ -84,9 +84,6 @@ class KociembaSolver extends Solver {
     var busy = false;
     var depthPhaseOne = 1;
     final sw = Stopwatch()..start();
-
-    maxDepth ??= Solver.defaultMaxDepth;
-    timeout ??= Solver.defaultTimeout;
 
     while (true) {
       do {

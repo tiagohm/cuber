@@ -17,7 +17,7 @@ abstract class Solver {
   /// or `null` if the [timeout] is exceeded or there is no [Solution].
   ///
   /// Returns [Solution.empty] if the [cube] is already solved.
-  Solution solve(
+  Solution? solve(
     Cube cube, {
     int maxDepth = defaultMaxDepth,
     Duration timeout = defaultTimeout,
@@ -29,8 +29,6 @@ abstract class Solver {
     Cube cube, {
     Duration timeout = defaultTimeout,
   }) async* {
-    timeout ??= Solver.defaultTimeout;
-
     var maxDepth = Solver.defaultMaxDepth;
     final solutions = <Solution>{};
     final sw = Stopwatch()..start();

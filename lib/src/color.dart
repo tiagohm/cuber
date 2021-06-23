@@ -40,13 +40,11 @@ const _letterByColor = {
 /// Gets the [Color] from a representation [letter].
 Color colorFromString(String letter) {
   if (_colorByLetter.containsKey(letter)) {
-    return _colorByLetter[letter];
+    return _colorByLetter[letter]!;
   } else {
     throw ArgumentError('Invalid color letter: $letter');
   }
 }
 
 /// Gets the representation letter from a [color].
-String stringFromColor(Color color) {
-  return _letterByColor[color];
-}
+String stringFromColor(Color color) => _letterByColor[color]!;

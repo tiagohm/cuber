@@ -21,7 +21,7 @@ class Solution extends Equatable {
   static const empty = Solution();
 
   /// The number of moves of the [Solution].
-  int get length => algorithm?.length ?? 0;
+  int get length => algorithm.length;
 
   /// Returns true if there are no moves in the [Solution].
   bool get isEmpty => length == 0;
@@ -30,9 +30,7 @@ class Solution extends Equatable {
   bool get isNotEmpty => !isEmpty;
 
   @override
-  String toString() {
-    return algorithm?.toString() ?? '';
-  }
+  String toString() => algorithm.toString();
 
   @override
   List<Object> get props => [algorithm];

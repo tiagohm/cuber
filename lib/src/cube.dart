@@ -1,6 +1,6 @@
 import 'package:cuber/cuber.dart';
-import 'package:cuber/src/other_tables/cornerMoveTable.dart';
-import 'package:cuber/src/other_tables/edgeMoveTable.dart';
+import 'package:cuber/src/other_tables/corner_move_table.dart';
+import 'package:cuber/src/other_tables/edge_move_table.dart';
 import 'package:equatable/equatable.dart';
 
 const _cornerFacelet = [
@@ -78,44 +78,6 @@ enum CubeStatus {
 
 /// The Rubik's [Cube].
 class Cube extends Equatable {
-  /// Corner permutation.
-  final List<Corner> _cp;
-
-  /// Corner orientation.
-  final List<int> _co;
-
-  /// Edge permutation.
-  final List<Edge> _ep;
-
-  /// Edge orientation.
-  final List<int> _eo;
-
-  static const _defaultCornerPositions = [
-    Corner.upRightFront,
-    Corner.upFrontLeft,
-    Corner.upLeftBottom,
-    Corner.upBottomRight,
-    Corner.downFrontRight,
-    Corner.downLeftFront,
-    Corner.downBottomLeft,
-    Corner.downRightBottom,
-  ];
-
-  static const _defaultEdgePositions = [
-    Edge.upRight,
-    Edge.upFront,
-    Edge.upLeft,
-    Edge.upBottom,
-    Edge.downRight,
-    Edge.downFront,
-    Edge.downLeft,
-    Edge.downBottom,
-    Edge.frontRight,
-    Edge.frontLeft,
-    Edge.bottomLeft,
-    Edge.bottomRight,
-  ];
-
   const Cube._({
     List<Corner> cp = _defaultCornerPositions,
     List<int> co = const [0, 0, 0, 0, 0, 0, 0, 0],
@@ -126,11 +88,7 @@ class Cube extends Equatable {
         _ep = ep,
         _eo = eo;
 
-  /// The solved [Cube].
-  static const solved = Cube._();
-
-  /// Returns `true` if the [Cube] is solved.
-  bool get isSolved => this == solved;
+  /// Corner permutation
 
   /// Creates a [Cube] from the your [definition] string U..R..F..D..L..B.
   factory Cube.from(String definition) {
@@ -206,15 +164,58 @@ class Cube extends Equatable {
     return Algorithm.scramble(n: n).apply(Cube.solved);
   }
 
-  /// Creates a [Cube] instance from a [json] object.
-  factory Cube.fromJson(json) {
-    return Cube._(
-      cp: [for (final item in json['cp']) Corner.values[item]],
-      co: [for (final item in json['co']) item],
-      ep: [for (final item in json['ep']) Edge.values[item]],
-      eo: [for (final item in json['eo']) item],
-    );
-  }
+  // /// Creates a [Cube] instance from a [json] object.
+  // factory Cube.fromJson(Map<String, Object> json) {
+  //   return Cube._(
+  //     cp: [for (final item in json['cp'] as List) Corner.values[item]],
+  //     co: [for (final item in json['co'] as List) item],
+  //     ep: [for (final item in json['ep'] as List) Edge.values[item]],
+  //     eo: [for (final item in json['eo'] as List) item],
+  //   );
+  // }
+
+  final List<Corner> _cp;
+
+  /// Corner orientation.
+  final List<int> _co;
+
+  /// Edge permutation.
+  final List<Edge> _ep;
+
+  /// Edge orientation.
+  final List<int> _eo;
+
+  static const _defaultCornerPositions = [
+    Corner.upRightFront,
+    Corner.upFrontLeft,
+    Corner.upLeftBottom,
+    Corner.upBottomRight,
+    Corner.downFrontRight,
+    Corner.downLeftFront,
+    Corner.downBottomLeft,
+    Corner.downRightBottom,
+  ];
+
+  static const _defaultEdgePositions = [
+    Edge.upRight,
+    Edge.upFront,
+    Edge.upLeft,
+    Edge.upBottom,
+    Edge.downRight,
+    Edge.downFront,
+    Edge.downLeft,
+    Edge.downBottom,
+    Edge.frontRight,
+    Edge.frontLeft,
+    Edge.bottomLeft,
+    Edge.bottomRight,
+  ];
+
+  /// The solved [Cube].
+  static const solved = Cube._();
+
+  /// Returns `true` if the [Cube] is solved.
+  bool get isSolved => this == solved;
 
   /// A [Cube] from a checkerboard-like pattern.
   static final checkerboard =
@@ -295,11 +296,13 @@ class Cube extends Equatable {
     int k,
   ) {
     if (n < k) return 0;
-    if (k > n / 2) k = n - k;
+
+    var k1 = k;
+    if (k > n / 2) k1 = n - k;
 
     var s = 1;
 
-    for (var i = n, j = 1; i != n - k; i--, j++) {
+    for (var i = n, j = 1; i != n - k1; i--, j++) {
       s *= i;
       s ~/= j;
     }
@@ -508,13 +511,14 @@ class Cube extends Equatable {
   Cube twist(int value) {
     final co = List.of(_co);
     var twistParity = 0;
+    var _value = value;
 
     for (var i = Corner.downRightBottom.index - 1;
         i >= Corner.upRightFront.index;
         i--) {
-      co[i] = value % 3;
+      co[i] = _value % 3;
       twistParity += co[i];
-      value ~/= 3;
+      _value ~/= 3;
     }
 
     co[Corner.downRightBottom.index] = (3 - twistParity % 3) % 3;
@@ -537,11 +541,12 @@ class Cube extends Equatable {
   Cube flip(int value) {
     final eo = List.of(_eo);
     var flipParity = 0;
+    var _value = value;
 
     for (var i = Edge.bottomRight.index - 1; i >= Edge.upRight.index; i--) {
-      eo[i] = value % 2;
+      eo[i] = _value % 2;
       flipParity += eo[i];
-      value ~/= 2;
+      _value ~/= 2;
     }
 
     eo[Edge.bottomRight.index] = (2 - flipParity % 2) % 2;
@@ -964,10 +969,11 @@ class Cube extends Equatable {
   Cube upRightFrontToDownLeftBottom(int index) {
     final cp = List.of(_cp);
     final perm = List.of(Corner.values);
+    var _index = index;
 
     for (var j = 1; j < 8; j++) {
-      var k = index % (j + 1);
-      index ~/= j + 1;
+      var k = _index % (j + 1);
+      _index ~/= j + 1;
 
       while (k-- > 0) {
         _rotateRight(perm, 0, j);
@@ -1005,12 +1011,13 @@ class Cube extends Equatable {
 
   ///
   Cube upRightToBottomRight(int index) {
+    var _index = index;
     final ep = List.of(_ep);
     final perm = List.of(Edge.values);
 
     for (var j = 1; j < 12; j++) {
-      var k = index % (j + 1);
-      index ~/= j + 1;
+      var k = _index % (j + 1);
+      _index ~/= j + 1;
 
       while (k-- > 0) {
         _rotateRight(perm, 0, j);
@@ -1129,7 +1136,7 @@ class Cube extends Equatable {
   }
 
   /// Returns the patternized [Cube]
-  /// to solve the pattern from [this] cube to [to] cube.
+  /// to solve the pattern from current cube to [to] cube.
   Cube patternize(Cube to) {
     return to.inverse().multiply(this);
   }
@@ -1188,42 +1195,41 @@ class Cube extends Equatable {
     Map<Color, String> colors = const <Color, String>{},
     List<Rotation> orientation = const [],
   }) {
+    var _cube = cube;
     for (final rotation in orientation) {
-      cube = Rotation.rotate(cube, rotation);
+      _cube = Rotation.rotate(_cube, rotation);
     }
 
-    final sb = StringBuffer();
-
-    sb.write(
-      '<svg xmlns="http://www.w3.org/2000/svg" version="1.1"'
-      ' width="$width" height="$height"'
-      ' viewBox="-0.9 -0.9 1.8 1.8">',
-    );
-    sb.write('<g style="stroke-width:0.1;stroke-linejoin:round;opacity:1">');
-    sb.write(
-      '<polygon fill="#000000" stroke="#000000"'
-      ' points="-4.84653508457E-17,-0.707127090835'
-      ' 0.714632556057,-0.418930531644 6.65952705638E-17,-0.0229253960154'
-      ' -0.714632556057,-0.418930531644" />',
-    );
-    sb.write(
-      '<polygon fill="#000000" stroke="#000000"'
-      ' points="6.65952705638E-17,-0.0229253960154'
-      ' 0.714632556057,-0.418930531644 0.621255187784,0.36419102922'
-      ' 5.65124685731E-17,0.82453746441" />',
-    );
-    sb.write(
-      '<polygon fill="#000000" stroke="#000000"'
-      ' points="-0.714632556057,-0.418930531644'
-      ' 6.65952705638E-17,-0.0229253960154 5.65124685731E-17,0.82453746441'
-      ' -0.621255187784,0.36419102922" />',
-    );
-    sb.write('</g>');
-
-    sb.write(
-      '<g style="opacity:1;stroke-opacity:0.5;stroke-width:0;'
-      'stroke-linejoin:round">',
-    );
+    final sb = StringBuffer()
+      ..write(
+        '<svg xmlns="http://www.w3.org/2000/svg" version="1.1"'
+        ' width="$width" height="$height"'
+        ' viewBox="-0.9 -0.9 1.8 1.8">',
+      )
+      ..write('<g style="stroke-width:0.1;stroke-linejoin:round;opacity:1">')
+      ..write(
+        '<polygon fill="#000000" stroke="#000000"'
+        ' points="-4.84653508457E-17,-0.707127090835'
+        ' 0.714632556057,-0.418930531644 6.65952705638E-17,-0.0229253960154'
+        ' -0.714632556057,-0.418930531644" />',
+      )
+      ..write(
+        '<polygon fill="#000000" stroke="#000000"'
+        ' points="6.65952705638E-17,-0.0229253960154'
+        ' 0.714632556057,-0.418930531644 0.621255187784,0.36419102922'
+        ' 5.65124685731E-17,0.82453746441" />',
+      )
+      ..write(
+        '<polygon fill="#000000" stroke="#000000"'
+        ' points="-0.714632556057,-0.418930531644'
+        ' 6.65952705638E-17,-0.0229253960154 5.65124685731E-17,0.82453746441'
+        ' -0.621255187784,0.36419102922" />',
+      )
+      ..write('</g>')
+      ..write(
+        '<g style="opacity:1;stroke-opacity:0.5;stroke-width:0; '
+        'stroke-linejoin:round">',
+      );
 
     final facelets = <String>[];
 
@@ -1236,8 +1242,9 @@ class Cube extends Equatable {
 
     _polygons(facelets).forEach(sb.write);
 
-    sb.write('</g>');
-    sb.write('</svg>');
+    sb
+      ..write('</g>')
+      ..write('</svg>');
 
     return '$sb';
   }

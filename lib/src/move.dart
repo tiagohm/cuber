@@ -6,6 +6,48 @@ import 'package:equatable/equatable.dart';
 /// Represents a move necessary to solve the cube
 /// using Herbert Kociemba's two-phase algorithm.
 class Move extends Equatable {
+  /// Creates a [Move] instance of a cube face [color],
+  /// and if the turn is [inverted] or [double].
+  const Move(
+    this.color, {
+    this.inverted = false,
+    this.double = false,
+  }) : assert(
+          !inverted || !double,
+          'Inverted and double both cannot be true.\n'
+          '(double: true & inverted: true) == (double: true & inverted: false)'
+          ' and we prefer to have (double: true and inverted: false)',
+        );
+
+  /// Parses a [move] from [String].
+  factory Move.parse(String move) {
+    if (move.isEmpty || move.length > 2) {
+      throw ArgumentError('Invalid move: $move');
+    }
+
+    final letter = move[0].toUpperCase();
+    final inverted = move.length > 1 && move[1] == "'";
+    final double = move.length > 1 && move[1] == '2';
+
+    final color = colorFromString(letter);
+
+    return Move(color, inverted: inverted, double: double);
+  }
+
+  /// Generates a random [Move].
+  factory Move.random() {
+    final n = _random.nextInt(18);
+    final color = n ~/ 3;
+    final inverted = n % 3 == 2;
+    final double = n % 3 == 1;
+
+    return Move(
+      Color.values[color],
+      inverted: inverted,
+      double: double,
+    );
+  }
+
   /// The color of the cube face.
   final Color color;
 
@@ -14,14 +56,6 @@ class Move extends Equatable {
 
   /// The double turn.
   final bool double;
-
-  /// Creates a [Move] instance of a cube face [color],
-  /// and if the turn is [inverted] or [double].
-  const Move(
-    this.color, {
-    this.inverted = false,
-    this.double = false,
-  }) : assert(!inverted || !double);
 
   /// Front clockwise move.
   static const front = Move(Color.front);
@@ -99,40 +133,11 @@ class Move extends Equatable {
     bottomDouble,
   ];
 
-  /// Parses a [move] from [String].
-  factory Move.parse(String move) {
-    if (move.isEmpty || move.length > 2) {
-      throw ArgumentError('Invalid move: $move');
-    }
-
-    final letter = move[0].toUpperCase();
-    final inverted = move.length > 1 && move[1] == "'";
-    final double = move.length > 1 && move[1] == '2';
-
-    final color = colorFromString(letter);
-
-    return Move(color, inverted: inverted, double: double);
-  }
-
   static final _random = Random();
-
-  /// Generates a random [Move].
-  factory Move.random() {
-    final n = _random.nextInt(18);
-    final color = n ~/ 3;
-    final inverted = n % 3 == 2;
-    final double = n % 3 == 1;
-
-    return Move(
-      Color.values[color],
-      inverted: inverted,
-      double: double,
-    );
-  }
 
   /// Inverts the [Move].
   Move inverse() {
-    return double ? this : Move(color, double: false, inverted: !inverted);
+    return double ? this : Move(color, inverted: !inverted);
   }
 
   @override

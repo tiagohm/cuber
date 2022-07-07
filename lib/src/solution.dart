@@ -5,17 +5,17 @@ import 'package:equatable/equatable.dart';
 
 /// Represents a list of [Move]s to solve the [Cube].
 class Solution extends Equatable {
+  /// Creates a [Solution] instance.
+  const Solution({
+    this.algorithm = Algorithm.empty,
+    this.elapsedTime = Duration.zero,
+  });
+
   /// The moves of the [Solution].
   final Algorithm algorithm;
 
   /// Elapsed time to find the [Solution].
   final Duration elapsedTime;
-
-  /// Creates a [Solution] instance.
-  const Solution({
-    this.algorithm = Algorithm.empty,
-    this.elapsedTime = const Duration(),
-  });
 
   /// Empty solution.
   static const empty = Solution();

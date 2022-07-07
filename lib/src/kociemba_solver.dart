@@ -3,19 +3,19 @@ import 'dart:math';
 import 'package:cuber/src/algorithm.dart';
 import 'package:cuber/src/cube.dart';
 import 'package:cuber/src/move.dart';
-import 'package:cuber/src/prune_tables/flipMoveTable.dart';
-import 'package:cuber/src/prune_tables/frontRightToBottomRightMoveTable.dart';
-import 'package:cuber/src/prune_tables/mergeUpRightToUpLeftAndUpBottomToDownFrontTable.dart';
-import 'package:cuber/src/prune_tables/parityTable.dart';
-import 'package:cuber/src/prune_tables/sliceFlipPrunTable.dart';
-import 'package:cuber/src/prune_tables/sliceTwistPrunTable.dart';
-import 'package:cuber/src/prune_tables/sliceUpRightFrontToDownLeftFrontParityPrunTable.dart';
-import 'package:cuber/src/prune_tables/sliceUpRightToDownFrontParityPrunTable.dart';
-import 'package:cuber/src/prune_tables/twistMoveTable.dart';
-import 'package:cuber/src/prune_tables/upBottomToDownFrontMoveTable.dart';
-import 'package:cuber/src/prune_tables/upRightFrontToDownLeftFrontMoveTable.dart';
-import 'package:cuber/src/prune_tables/upRightToDownFrontMoveTable.dart';
-import 'package:cuber/src/prune_tables/upRightToUpLeftMoveTable.dart';
+import 'package:cuber/src/prune_tables/flip_move_table.dart';
+import 'package:cuber/src/prune_tables/front_right_to_bottom_right_move_table.dart';
+import 'package:cuber/src/prune_tables/merge_up_right_to_up_left_and_up_bottom_to_down_front_table.dart';
+import 'package:cuber/src/prune_tables/parity_table.dart';
+import 'package:cuber/src/prune_tables/slice_flip_prun_table.dart';
+import 'package:cuber/src/prune_tables/slice_twist_prun_table.dart';
+import 'package:cuber/src/prune_tables/slice_up_right_front_to_down_left_front_parity_prun_table.dart';
+import 'package:cuber/src/prune_tables/slice_up_right_to_down_front_parity_prun_table.dart';
+import 'package:cuber/src/prune_tables/twist_move_table.dart';
+import 'package:cuber/src/prune_tables/up_bottom_to_down_front_move_table.dart';
+import 'package:cuber/src/prune_tables/up_right_front_to_down_left_front_move_table.dart';
+import 'package:cuber/src/prune_tables/up_right_to_down_front_move_table.dart';
+import 'package:cuber/src/prune_tables/up_right_to_up_left_move_table.dart';
 import 'package:cuber/src/solution.dart';
 import 'package:cuber/src/solver.dart';
 
@@ -331,9 +331,9 @@ class KociembaSolver extends Solver {
     int index,
   ) {
     if ((index & 1) == 0) {
-      return (table[index ~/ 2] & 0x0f);
+      return table[index ~/ 2] & 0x0f;
     } else {
-      return ((table[index ~/ 2] >> 4) & 0x0f);
+      return (table[index ~/ 2] >> 4) & 0x0f;
     }
   }
 

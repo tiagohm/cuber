@@ -7,15 +7,10 @@ import 'package:equatable/equatable.dart';
 
 /// A [List] of [Move]s.
 class Algorithm extends Equatable with ListMixin<Move> implements List<Move> {
-  final List<Move> _moves;
-
   /// Creates an instance of [Algorithm] class.
   const Algorithm({
     List<Move> moves = const [],
   }) : _moves = moves;
-
-  /// Creates an empty instance of [Algorithm] class.
-  static const empty = Algorithm();
 
   /// Parses an [Algorithm] from [String].
   factory Algorithm.parse(String text) {
@@ -60,6 +55,11 @@ class Algorithm extends Equatable with ListMixin<Move> implements List<Move> {
     return Algorithm(moves: moves);
   }
 
+  final List<Move> _moves;
+
+  /// Creates an empty instance of [Algorithm] class.
+  static const empty = Algorithm();
+
   /// Number of [Move]s.
   @override
   int get length => _moves.length;
@@ -74,15 +74,16 @@ class Algorithm extends Equatable with ListMixin<Move> implements List<Move> {
     int n = 1,
     void Function(Cube cube, Move move, int step, int total)? onProgress,
   }) {
+    var _cube = cube;
     for (var i = 0, c = 1; i < n; i++) {
       for (var k = 0; k < length; k++, c++) {
         final move = this[k];
-        cube = cube.move(move);
-        onProgress?.call(cube, move, c, length * n);
+        _cube = _cube.move(move);
+        onProgress?.call(_cube, move, c, length * n);
       }
     }
 
-    return cube;
+    return _cube;
   }
 
   @override

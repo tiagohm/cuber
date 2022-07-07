@@ -18,8 +18,10 @@ void main() {
     expect(cube.computeUpRightFrontToDownLeftFront(), 0);
     expect(cube.computeUpRightToBottomRight(), 0);
     expect(cube.isOk, true);
-    expect(cube.definition,
-        'UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB');
+    expect(
+      cube.definition,
+      'UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB',
+    );
   });
 
   test('parse solved cube input is equals to solved cube', () {
@@ -476,7 +478,7 @@ void main() {
     expectPatternSolution(
       'UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB',
       'UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB',
-      isEmpty,
+      '',
     );
     expectPatternSolution(
       'UUFLUFBULDLRURUUFBUBBFFLDBRFDBLDRDRRFDLBLDFBRURLFBRDDL',
@@ -761,7 +763,7 @@ void main() {
 
 void expectSolution(
   String definition,
-  solution,
+  String solution,
 ) {
   final cube = Cube.from(definition);
   expect(cube.solve().toString(), solution);
@@ -770,7 +772,7 @@ void expectSolution(
 void expectPatternSolution(
   String from,
   String to,
-  solution,
+  String solution,
 ) {
   final a = Cube.from(from);
   final b = Cube.from(to);

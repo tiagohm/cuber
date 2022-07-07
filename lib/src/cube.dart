@@ -1,13 +1,6 @@
 import 'package:cuber/cuber.dart';
-import 'package:cuber/src/color.dart';
-import 'package:cuber/src/corner.dart';
-import 'package:cuber/src/edge.dart';
-import 'package:cuber/src/facelet.dart';
-import 'package:cuber/src/move.dart';
 import 'package:cuber/src/other_tables/cornerMoveTable.dart';
 import 'package:cuber/src/other_tables/edgeMoveTable.dart';
-import 'package:cuber/src/rotation.dart';
-import 'package:cuber/src/solution.dart';
 import 'package:equatable/equatable.dart';
 
 const _cornerFacelet = [

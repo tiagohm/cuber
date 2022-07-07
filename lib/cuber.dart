@@ -1,7 +1,7 @@
 library cuber;
 
-export 'package:cuber/src/axis.dart';
 export 'package:cuber/src/algorithm.dart';
+export 'package:cuber/src/axis.dart';
 export 'package:cuber/src/color.dart';
 export 'package:cuber/src/corner.dart';
 export 'package:cuber/src/cube.dart';

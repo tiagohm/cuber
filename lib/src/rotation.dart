@@ -34,7 +34,12 @@ class Rotation extends Equatable {
   const Rotation({
     required this.axis,
     int n = 1,
-  })  : n = (n >= 0 ? n : n >= -4 ? n + 4 : -n - 4) % 4;
+  }) : n = (n >= 0
+                ? n
+                : n >= -4
+                    ? n + 4
+                    : -n - 4) %
+            4;
 
   /// An instance of [Rotate] class that do not apply the rotation.
   static const none = Rotation(axis: Axis.x, n: 0);
@@ -183,7 +188,11 @@ class Rotation extends Equatable {
 
   @override
   String toString() {
-    final name = axis == Axis.z ? 'Z' : axis == Axis.y ? 'Y' : 'X';
+    final name = axis == Axis.z
+        ? 'Z'
+        : axis == Axis.y
+            ? 'Y'
+            : 'X';
     return '$name$n';
   }
 

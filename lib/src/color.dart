@@ -1,50 +1,45 @@
 ///  The names of the colors of the cube facelets.
 enum Color {
   /// Up face color.
-  up,
+  up('U'),
 
   /// Right face color.
-  right,
+  right('R'),
 
   /// Front face color.
-  front,
+  front('F'),
 
   /// Down face color.
-  down,
+  down('D'),
 
   /// Left face color.
-  left,
+  left('L'),
 
   /// Bottom face color.
-  bottom,
-}
+  bottom('B');
 
-const _colorByLetter = {
-  'U': Color.up,
-  'R': Color.right,
-  'F': Color.front,
-  'D': Color.down,
-  'L': Color.left,
-  'B': Color.bottom,
-};
+  /// The letter representing this color.
+  final String letter;
 
-const _letterByColor = {
-  Color.front: 'F',
-  Color.right: 'R',
-  Color.bottom: 'B',
-  Color.left: 'L',
-  Color.up: 'U',
-  Color.down: 'D',
-};
+  const Color(this.letter);
 
-/// Gets the [Color] from a representation [letter].
-Color colorFromString(String letter) {
-  if (_colorByLetter.containsKey(letter)) {
-    return _colorByLetter[letter]!;
-  } else {
+  /// Gets the [Color] from a representation [letter].
+  static Color of(String letter) {
+    switch (letter) {
+      case 'U':
+        return Color.up;
+      case 'R':
+        return Color.right;
+      case 'F':
+        return Color.front;
+      case 'D':
+        return Color.down;
+      case 'L':
+        return Color.left;
+      case 'B':
+        return Color.bottom;
+    }
+
     throw ArgumentError('Invalid color letter: $letter');
   }
 }
-
-/// Gets the representation letter from a [color].
-String stringFromColor(Color color) => _letterByColor[color]!;

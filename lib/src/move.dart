@@ -108,8 +108,7 @@ class Move extends Equatable {
     final letter = move[0].toUpperCase();
     final inverted = move.length > 1 && move[1] == "'";
     final double = move.length > 1 && move[1] == '2';
-
-    final color = colorFromString(letter);
+    final color = Color.of(letter);
 
     return Move(color, inverted: inverted, double: double);
   }
@@ -137,12 +136,8 @@ class Move extends Equatable {
 
   @override
   String toString() {
-    final a = stringFromColor(color);
-    final b = inverted
-        ? "'"
-        : double
-            ? '2'
-            : '';
+    final a = color.letter;
+    final b = inverted ? "'" : (double ? '2' : '');
     return '$a$b';
   }
 

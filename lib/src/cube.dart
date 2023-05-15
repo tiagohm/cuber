@@ -1,13 +1,6 @@
 import 'package:cuber/cuber.dart';
-import 'package:cuber/src/color.dart';
-import 'package:cuber/src/corner.dart';
-import 'package:cuber/src/edge.dart';
-import 'package:cuber/src/facelet.dart';
-import 'package:cuber/src/move.dart';
 import 'package:cuber/src/other_tables/cornerMoveTable.dart';
 import 'package:cuber/src/other_tables/edgeMoveTable.dart';
-import 'package:cuber/src/rotation.dart';
-import 'package:cuber/src/solution.dart';
 import 'package:equatable/equatable.dart';
 
 const _cornerFacelet = [
@@ -146,7 +139,7 @@ class Cube extends Equatable {
     }
 
     return Cube.of([
-      for (var i = 0; i < definition.length; i++) colorFromString(definition[i])
+      for (var i = 0; i < definition.length; i++) colorFromString(definition[i]),
     ]);
   }
 
@@ -224,78 +217,60 @@ class Cube extends Equatable {
   }
 
   /// A [Cube] from a checkerboard-like pattern.
-  static final checkerboard =
-      Cube.from('UFUFUFUFURURURURURFRFRFRFRFDBDBDBDBDLDLDLDLDLBLBLBLBLB');
+  static final checkerboard = Cube.from('UFUFUFUFURURURURURFRFRFRFRFDBDBDBDBDLDLDLDLDLBLBLBLBLB');
 
   /// A [Cube] from a wire-like pattern.
-  static final wire =
-      Cube.from('UUUUUUUUURLLRRRLLRBBFFFFFBBDDDDDDDDDLRRLLLRRLFFBBBBBFF');
+  static final wire = Cube.from('UUUUUUUUURLLRRRLLRBBFFFFFBBDDDDDDDDDLRRLLLRRLFFBBBBBFF');
 
   /// A [Cube] from a spiral-like pattern.
-  static final spiral =
-      Cube.from('FFFFUFFUURRUURUUUURRFRFFRRRBBBBDBDDBDDDDLDLLDLLLLBBLLB');
+  static final spiral = Cube.from('FFFFUFFUURRUURUUUURRFRFFRRRBBBBDBDDBDDDDLDLLDLLLLBBLLB');
 
   /// A [Cube] from a stripe-like pattern.
-  static final stripes =
-      Cube.from('UUUUUUUUUBRFBRFBRFLFRLFRLFRDDDDDDDDDFLBFLBFLBRBLRBLRBL');
+  static final stripes = Cube.from('UUUUUUUUUBRFBRFBRFLFRLFRLFRDDDDDDDDDFLBFLBFLBRBLRBLRBL');
 
   /// A [Cube] from a cross-like pattern.
-  static final crossOne =
-      Cube.from('DUDUUUDUDFRFRRRFRFRFRFFFRFRUDUDDDUDUBLBLLLBLBLBLBBBLBL');
+  static final crossOne = Cube.from('DUDUUUDUDFRFRRRFRFRFRFFFRFRUDUDDDUDUBLBLLLBLBLBLBBBLBL');
 
   /// A [Cube] from a cross-like pattern.
-  static final crossTwo =
-      Cube.from('RURUUURURFRFRRRFRFUFUFFFUFULDLDDDLDLBLBLLLBLBDBDBBBDBD');
+  static final crossTwo = Cube.from('RURUUURURFRFRRRFRFUFUFFFUFULDLDDDLDLBLBLLLBLBDBDBBBDBD');
 
   /// A [Cube] from a cube-in-cube-like pattern.
-  static final cubeInCube =
-      Cube.from('FFFFUUFUURRURRUUUURFFRFFRRRBBBDDBDDBDDDLLDLLDLLLLBBLBB');
+  static final cubeInCube = Cube.from('FFFFUUFUURRURRUUUURFFRFFRRRBBBDDBDDBDDDLLDLLDLLLLBBLBB');
 
   /// A [Cube] from a cube-in-cube-in-cube-like pattern.
-  static final cubeInCubeInCube =
-      Cube.from('RRRRUURUFURFRRFFFFUFRUFFUUULLLDDLBDLBBBLLBDLBDDDDBBDBL');
+  static final cubeInCubeInCube = Cube.from('RRRRUURUFURFRRFFFFUFRUFFUUULLLDDLBDLBBBLLBDLBDDDDBBDBL');
 
   /// A [Cube] from a anaconda-like pattern.
-  static final anaconda =
-      Cube.from('FUFUUFFFFUUUURRURURRRFFRRFRBDBBDDBBBDLDDLLDDDLBLBBLLLL');
+  static final anaconda = Cube.from('FUFUUFFFFUUUURRURURRRFFRRFRBDBBDDBBBDLDDLLDDDLBLBBLLLL');
 
   /// A [Cube] from a python-like pattern.
-  static final python =
-      Cube.from('DUDDUDDUDFFFFRRFRFRFRFFRRRRUUUDDDUUUBBBBLLBLBLBLBBLLLL');
+  static final python = Cube.from('DUDDUDDUDFFFFRRFRFRFRFFRRRRUUUDDDUUUBBBBLLBLBLBLBBLLLL');
 
   /// A [Cube] from a twister-like pattern.
-  static final twister =
-      Cube.from('RURRUURUURRFRRFFRFUFFFFFUUULLLDDDDDLBBBLLLLLBDBDDBBDBB');
+  static final twister = Cube.from('RURRUURUURRFRRFFRFUFFFFFUUULLLDDDDDLBBBLLLLLBDBDDBBDBB');
 
   /// A [Cube] from a tetris-like pattern.
-  static final tetris =
-      Cube.from('FFBFUBFBBUDDURDUUDRLLRFLRRLBBFBDFBFFUDDULDUUDLRRLBRLLR');
+  static final tetris = Cube.from('FFBFUBFBBUDDURDUUDRLLRFLRRLBBFBDFBFFUDDULDUUDLRRLBRLLR');
 
   /// A [Cube] from a chicken-feet-like pattern.
-  static final chickenFeet =
-      Cube.from('RRRRURRRURFFFRFFFFUUFUFUUUULLLLDLDLLBBBBLBLBBDDDDBDDDB');
+  static final chickenFeet = Cube.from('RRRRURRRURFFFRFFFFUUFUFUUUULLLLDLDLLBBBBLBLBBDDDDBDDDB');
 
   /// A [Cube] from a four-spots pattern.
-  static final fourSpots =
-      Cube.from('UUUUUUUUULLLLRLLLLBBBBFBBBBDDDDDDDDDRRRRLRRRRFFFFBFFFF');
+  static final fourSpots = Cube.from('UUUUUUUUULLLLRLLLLBBBBFBBBBDDDDDDDDDRRRRLRRRRFFFFBFFFF');
 
   /// A [Cube] from a six-spots pattern.
-  static final sixSpots =
-      Cube.from('FFFFUFFFFUUUURUUUURRRRFRRRRBBBBDBBBBDDDDLDDDDLLLLBLLLL');
+  static final sixSpots = Cube.from('FFFFUFFFFUUUURUUUURRRRFRRRRBBBBDBBBBDDDDLDDDDLLLLBLLLL');
 
   /// A [Cube] from a six-Ts pattern.
-  static final sixTs =
-      Cube.from('DDUUUUDDURLLRRRRLLFFFBFBBFBDUUDDDDUULRRLLLLRRFBFFBFBBB');
+  static final sixTs = Cube.from('DDUUUUDDURLLRRRRLLFFFBFBBFBDUUDDDDUULRRLLLLRRFBFFBFBBB');
 
   /// Rubik's Cube World Record by Feliks Zemdegs on May 6th, 2018,
   /// at Cube for Cambodia 2018 (Melbourne, Australia) in 4.22 seconds.
-  static final feliksZemdegs422 =
-      Cube.from('FFUUUULRUBLFURFULBFURLFBBRBLDLLDDURRRFDDLFLBDRRDDBBDBF');
+  static final feliksZemdegs422 = Cube.from('FFUUUULRUBLFURFULBFURLFBBRBLDLLDDURRRFDDLFLBDRRDDBBDBF');
 
   /// Rubik's Cube World Record by Yusheng Du (杜宇生) on Nov 24th, 2018,
   /// at Wuhu Open 2018 (Wuhu, China) in 3.47 seconds.
-  static final yushengDu347 =
-      Cube.from('LRUUUBBRRDLFDRRFFBRFFFFLUULLRDBDDLURULUULLBDBRBFDBFDBD');
+  static final yushengDu347 = Cube.from('LRUUUBBRRDLFDRRFFBRFFFFLUULLRDBDDLURULUULLBDBRBFDBFDBD');
 
   static int _cnk(
     int n,
@@ -502,9 +477,7 @@ class Cube extends Equatable {
   int computeTwist() {
     var res = 0;
 
-    for (var i = Corner.upRightFront.index;
-        i < Corner.downRightBottom.index;
-        i++) {
+    for (var i = Corner.upRightFront.index; i < Corner.downRightBottom.index; i++) {
       res = 3 * res + _co[i];
     }
 
@@ -516,9 +489,7 @@ class Cube extends Equatable {
     final co = List.of(_co);
     var twistParity = 0;
 
-    for (var i = Corner.downRightBottom.index - 1;
-        i >= Corner.upRightFront.index;
-        i--) {
+    for (var i = Corner.downRightBottom.index - 1; i >= Corner.upRightFront.index; i--) {
       co[i] = value % 3;
       twistParity += co[i];
       value ~/= 3;
@@ -560,9 +531,7 @@ class Cube extends Equatable {
   int computeCornerParity() {
     var s = 0;
 
-    for (var i = Corner.downRightBottom.index;
-        i >= Corner.upRightFront.index + 1;
-        i--) {
+    for (var i = Corner.downRightBottom.index; i >= Corner.upRightFront.index + 1; i--) {
       for (var j = i - 1; j >= Corner.upRightFront.index; j--) {
         if (_cp[j].index > _cp[i].index) {
           s++;
@@ -595,8 +564,7 @@ class Cube extends Equatable {
 
     // compute the index a < (12 choose 4) and the permutation array.
     for (var j = Edge.bottomRight.index; j >= Edge.upRight.index; j--) {
-      if (Edge.frontRight.index <= _ep[j].index &&
-          _ep[j].index <= Edge.bottomRight.index) {
+      if (Edge.frontRight.index <= _ep[j].index && _ep[j].index <= Edge.bottomRight.index) {
         a += _cnk(11 - j, x + 1);
         edge[3 - x++] = _ep[j];
       }
@@ -675,9 +643,7 @@ class Cube extends Equatable {
     var a = 0, x = 0, b = 0;
 
     // compute the index a < (8 choose 6) and the permutation array.
-    for (var j = Corner.upRightFront.index;
-        j <= Corner.downRightBottom.index;
-        j++) {
+    for (var j = Corner.upRightFront.index; j <= Corner.downRightBottom.index; j++) {
       if (_cp[j].index <= Corner.downLeftFront.index) {
         a += _cnk(j, x + 1);
         corner[x++] = _cp[j];
@@ -737,9 +703,7 @@ class Cube extends Equatable {
 
     x = 0;
 
-    for (var j = Corner.upRightFront.index;
-        j <= Corner.downRightBottom.index;
-        j++) {
+    for (var j = Corner.upRightFront.index; j <= Corner.downRightBottom.index; j++) {
       if (cp[j] == Corner.downRightBottom) {
         cp[j] = otherCorner[x++];
       }
@@ -894,8 +858,7 @@ class Cube extends Equatable {
 
     // compute the index a < (12 choose 3) and the permutation array.
     for (var j = Edge.upRight.index; j <= Edge.bottomRight.index; j++) {
-      if (Edge.upBottom.index <= _ep[j].index &&
-          _ep[j].index <= Edge.downFront.index) {
+      if (Edge.upBottom.index <= _ep[j].index && _ep[j].index <= Edge.downFront.index) {
         a += _cnk(j, x + 1);
         edge[x++] = _ep[j];
       }

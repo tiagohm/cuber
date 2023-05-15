@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cuber/src/algorithm.dart';
+import 'package:cuber/src/cube.dart';
 import 'package:cuber/src/move.dart';
 import 'package:cuber/src/prune_tables/flipMoveTable.dart';
 import 'package:cuber/src/prune_tables/frontRightToBottomRightMoveTable.dart';
@@ -16,7 +17,6 @@ import 'package:cuber/src/prune_tables/upRightFrontToDownLeftFrontMoveTable.dart
 import 'package:cuber/src/prune_tables/upRightToDownFrontMoveTable.dart';
 import 'package:cuber/src/prune_tables/upRightToUpLeftMoveTable.dart';
 import 'package:cuber/src/solution.dart';
-import 'package:cuber/src/cube.dart';
 import 'package:cuber/src/solver.dart';
 
 class _Search {

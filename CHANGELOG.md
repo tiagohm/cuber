@@ -1,3 +1,6 @@
+# 0.4.0
+* Dart SDK >= 2.17.
+
 # 0.3.0
 * Null safety support.
 
